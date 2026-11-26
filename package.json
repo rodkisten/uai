@@ -23,6 +23,12 @@
     "@tailwindcss/vite": "^4.0.0",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
-    "tailwind-merge": "^3.0.0"
+    "tailwind-merge": "^3.0.0",
+    "codemirror": "latest",
+    "@codemirror/autocomplete": "latest",
+    "@codemirror/view": "latest",
+    "@codemirror/state": "latest",
+    "@codemirror/lang-yaml": "latest",
+    "@codemirror/theme-one-dark": "latest"
   }
 }

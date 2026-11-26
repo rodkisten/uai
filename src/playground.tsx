@@ -1,4 +1,5 @@
 import {useState} from "react";
+import {AdvancedPlayground} from "./advanced-playground";
 import {PanelNavigation} from "../registry/components/panel-navigation";
 import {SessionAlert} from "../registry/components/session-alert";
 import {ExecutionTracker} from "../registry/components/execution-tracker";
@@ -16,5 +17,6 @@ export function Playground({name}:{name:string}){
  if(name==="execution-tracker")return <div className="grid gap-3"><label className="grid gap-1 text-sm">Execution status<select className={field} value={status} onChange={e=>setStatus(e.target.value)}>{["queued","in_progress","success","failure"].map(s=><option key={s}>{s}</option>)}</select></label><ExecutionTracker title="Workflow execution" name="Registry build" status={status} jobs={[{id:"build",name:"Build",status,steps:[{id:"install",name:"Install dependencies",status:status==="queued"?"queued":"success"},{id:"compile",name:"Typecheck and build",status}]}]} errors={status==="failure"?["Example: build failed"]:[]} note="Simulated execution, no external workflow triggered."/></div>;
  if(name==="panel-navigation")return <><PanelNavigation items={[{id:"editor",label:"Editor"},{id:"inspector",label:"Inspector"}]} value={pane} onChange={setPane}/><p className="text-sm">Selected: {pane}</p></>;
  if(name==="session-alert")return <SessionAlert title="Session expired" description="Example authentication state" busy={busy} onRetry={()=>{setBusy(true);setTimeout(()=>setBusy(false),800)}}/>;
+ if(["code-editor","expression-input","schema-form","key-value-editor","inspector-fields"].includes(name))return <AdvancedPlayground name={name}/>;
  return <p className="text-sm text-muted-foreground">Interactive example not available yet. Source and installation are available below.</p>;
 }
