@@ -4,7 +4,8 @@
   "scripts": {
     "build": "shadcn build --output public/r && vite build && node scripts/verify-registry.mjs",
     "typecheck": "tsc --noEmit",
-    "dev": "vite"
+    "dev": "vite",
+    "smoke:hosting": "node scripts/smoke-hosting.mjs"
   },
   "devDependencies": {
     "shadcn": "latest",
