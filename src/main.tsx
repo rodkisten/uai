@@ -1,6 +1,7 @@
 import {useState,useEffect} from "react";
 import {createRoot} from "react-dom/client";
 import {Copy,Search,Package,ExternalLink} from "lucide-react";
+import {createRootRoute,createRoute,createRouter,RouterProvider} from "@tanstack/react-router";
 import * as Tabs from "@radix-ui/react-tabs";
 import registry from "../registry.json";
 import {Playground} from "./playground";
@@ -9,13 +10,16 @@ import {Button} from "./components/ui/button";
 import {Input} from "./components/ui/input";
 import "./styles.css";
 const tabs=["preview","source","install"] as const;
-function readRoute(){const p=new URLSearchParams(location.search);const name=p.get("component");const tab=p.get("tab");return {selected:registry.items.find(i=>i.name===name)?.name??registry.items[0].name,tab:tabs.find(t=>t===tab)??"preview"}}
+const rootRoute=createRootRoute();
+const catalogRoute=createRoute({getParentRoute:()=>rootRoute,path:"/",validateSearch:(search:Record<string,unknown>)=>({component:registry.items.find(i=>i.name===search.component)?.name??registry.items[0].name,tab:tabs.find(t=>t===search.tab)??"preview"}),component:App});
+const router=createRouter({routeTree:rootRoute.addChildren([catalogRoute])});
+declare module "@tanstack/react-router" {interface Register {router:typeof router}}
 function App(){
- const [route,setRoute]=useState(readRoute),[query,setQuery]=useState(""),[source,setSource]=useState(""),[error,setError]=useState(""),[notice,setNotice]=useState("");
- const {selected,tab}=route;
+ const [query,setQuery]=useState(""),[source,setSource]=useState(""),[error,setError]=useState(""),[notice,setNotice]=useState("");
+ const {component:selected,tab}=catalogRoute.useSearch();
+ const nav=catalogRoute.useNavigate();
  const item=registry.items.find(i=>i.name===selected)!;
- useEffect(()=>{const sync=()=>setRoute(readRoute());window.addEventListener("popstate",sync);return()=>window.removeEventListener("popstate",sync)},[]);
- function navigate(name:string,nextTab:typeof tab){const url=new URL(location.href);url.searchParams.set("component",name);url.searchParams.set("tab",nextTab);history.pushState(null,"",url);setRoute({selected:name,tab:nextTab});setNotice("")}
+ function navigate(name:string,nextTab:typeof tab){void nav({search:{component:name,tab:nextTab}});setNotice("")}
  useEffect(()=>{const c=new AbortController();setSource("");setError("");fetch("/r/"+selected+".json",{signal:c.signal}).then(r=>{if(!r.ok)throw Error("Registry unavailable");return r.json()}).then(v=>{if(!c.signal.aborted)setSource(v.files?.[0]?.content??"")}).catch(e=>{if(!c.signal.aborted)setError(String(e))});return()=>c.abort()},[selected]);
  async function copy(s:string){try{await navigator.clipboard.writeText(s);setNotice("Copied")}catch{setNotice("Clipboard unavailable")}}
  const command="pnpm dlx shadcn@latest add "+location.origin+"/r/"+selected+".json";
@@ -27,4 +31,4 @@ function App(){
  <Tabs.Content value="source"><div className="mb-2 flex justify-end"><Button size="sm" variant="outline" disabled={!source} onClick={()=>void copy(source)}><Copy size={14}/> Copy source</Button></div>{error?<p role="alert">{error}</p>:source?<SourceView source={source}/>:<p>Loading source…</p>}</Tabs.Content>
  <Tabs.Content value="install" className="grid gap-3 rounded-xl border border-border bg-card p-4"><h3 className="font-medium">Installation</h3><div className="flex items-center gap-2 rounded-md bg-background p-3"><code className="min-w-0 flex-1 break-all text-xs">{command}</code><Button size="icon" variant="ghost" aria-label="Copy install command" onClick={()=>void copy(command)}><Copy size={16}/></Button></div><h3 className="font-medium">Dependencies</h3><div className="flex flex-wrap gap-2">{[...item.dependencies,...item.registryDependencies].map(d=><code key={d} className="rounded-md border border-border px-2 py-1 text-xs">{d}</code>)}</div></Tabs.Content></Tabs.Root><p className="mt-2 text-xs text-muted-foreground" role="status">{notice}</p></article></div></main>
 }
-createRoot(document.getElementById("root")!).render(<App/>);
+createRoot(document.getElementById("root")!).render(<RouterProvider router={router}/>);
