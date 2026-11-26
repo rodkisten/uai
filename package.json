@@ -29,6 +29,8 @@
     "@codemirror/view": "latest",
     "@codemirror/state": "latest",
     "@codemirror/lang-yaml": "latest",
-    "@codemirror/theme-one-dark": "latest"
+    "@codemirror/theme-one-dark": "latest",
+    "@radix-ui/react-tabs": "latest",
+    "@codemirror/lang-javascript": "latest"
   }
 }
