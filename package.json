@@ -1,0 +1,10 @@
+{
+  "name": "uai-registry",
+  "private": true,
+  "scripts": {
+    "build": "shadcn build --output public/r"
+  },
+  "devDependencies": {
+    "shadcn": "latest"
+  }
+}

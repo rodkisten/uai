@@ -1,0 +1,187 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry.json",
+  "name": "uai",
+  "homepage": "https://github.com/rodkisten/uai",
+  "items": [
+    {
+      "name": "panel-navigation",
+      "type": "registry:component",
+      "title": "panel-navigation",
+      "description": "Shared panel-navigation component",
+      "dependencies": [],
+      "registryDependencies": [
+        "button"
+      ],
+      "files": [
+        {
+          "path": "registry/components/panel-navigation.tsx",
+          "type": "registry:component",
+          "target": "components/uai/panel-navigation.tsx"
+        }
+      ]
+    },
+    {
+      "name": "inspector-fields",
+      "type": "registry:component",
+      "title": "inspector-fields",
+      "description": "Shared inspector-fields component",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "button"
+      ],
+      "files": [
+        {
+          "path": "registry/components/inspector-fields.tsx",
+          "type": "registry:component",
+          "target": "components/uai/inspector-fields.tsx"
+        }
+      ]
+    },
+    {
+      "name": "code-editor",
+      "type": "registry:component",
+      "title": "code-editor",
+      "description": "Shared code-editor component",
+      "dependencies": [
+        "codemirror",
+        "@codemirror/autocomplete",
+        "@codemirror/view",
+        "@codemirror/state",
+        "@codemirror/lang-yaml",
+        "@codemirror/theme-one-dark"
+      ],
+      "registryDependencies": [
+        "button"
+      ],
+      "files": [
+        {
+          "path": "registry/components/code-editor.tsx",
+          "type": "registry:component",
+          "target": "components/uai/code-editor.tsx"
+        }
+      ]
+    },
+    {
+      "name": "expression-input",
+      "type": "registry:component",
+      "title": "expression-input",
+      "description": "Shared expression-input component",
+      "dependencies": [],
+      "registryDependencies": [
+        "@uai/code-editor"
+      ],
+      "files": [
+        {
+          "path": "registry/components/expression-input.tsx",
+          "type": "registry:component",
+          "target": "components/uai/expression-input.tsx"
+        }
+      ]
+    },
+    {
+      "name": "key-value-editor",
+      "type": "registry:component",
+      "title": "key-value-editor",
+      "description": "Shared key-value-editor component",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "button",
+        "input"
+      ],
+      "files": [
+        {
+          "path": "registry/components/key-value-editor.tsx",
+          "type": "registry:component",
+          "target": "components/uai/key-value-editor.tsx"
+        }
+      ]
+    },
+    {
+      "name": "schema-form",
+      "type": "registry:component",
+      "title": "schema-form",
+      "description": "Shared schema-form component",
+      "dependencies": [],
+      "registryDependencies": [
+        "input"
+      ],
+      "files": [
+        {
+          "path": "registry/components/schema-form.tsx",
+          "type": "registry:component",
+          "target": "components/uai/schema-form.tsx"
+        }
+      ]
+    },
+    {
+      "name": "patch-review",
+      "type": "registry:component",
+      "title": "patch-review",
+      "description": "Shared patch-review component",
+      "dependencies": [],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "registry/components/patch-review.tsx",
+          "type": "registry:component",
+          "target": "components/uai/patch-review.tsx"
+        }
+      ]
+    },
+    {
+      "name": "execution-tracker",
+      "type": "registry:component",
+      "title": "execution-tracker",
+      "description": "Shared execution-tracker component",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "registry/components/execution-tracker.tsx",
+          "type": "registry:component",
+          "target": "components/uai/execution-tracker.tsx"
+        }
+      ]
+    },
+    {
+      "name": "session-alert",
+      "type": "registry:component",
+      "title": "session-alert",
+      "description": "Shared session-alert component",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "button"
+      ],
+      "files": [
+        {
+          "path": "registry/components/session-alert.tsx",
+          "type": "registry:component",
+          "target": "components/uai/session-alert.tsx"
+        }
+      ]
+    },
+    {
+      "name": "workbench-layout",
+      "type": "registry:component",
+      "title": "workbench-layout",
+      "description": "Shared workbench-layout component",
+      "dependencies": [],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "registry/components/workbench-layout.tsx",
+          "type": "registry:component",
+          "target": "components/uai/workbench-layout.tsx"
+        }
+      ]
+    }
+  ]
+}
