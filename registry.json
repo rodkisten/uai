@@ -105,7 +105,10 @@
       "type": "registry:component",
       "title": "schema-form",
       "description": "Shared schema-form component",
-      "dependencies": [],
+      "dependencies": [
+        "@radix-ui/react-switch",
+        "@radix-ui/react-checkbox"
+      ],
       "registryDependencies": [
         "input"
       ],

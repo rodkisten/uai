@@ -32,6 +32,8 @@
     "@codemirror/theme-one-dark": "latest",
     "@radix-ui/react-tabs": "latest",
     "@codemirror/lang-javascript": "latest",
-    "@tanstack/react-router": "latest"
+    "@tanstack/react-router": "latest",
+    "@radix-ui/react-switch": "latest",
+    "@radix-ui/react-checkbox": "latest"
   }
 }
