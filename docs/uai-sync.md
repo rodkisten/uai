@@ -30,3 +30,7 @@ Configure GITHUB_APP_ID and GITHUB_APP_PRIVATE_KEY with an installation authoriz
 ## Release chaining and policy
 
 Set UAI_AUTO_DISTRIBUTE=true to chain distribution after successful release publication. Consumers remain individually opt-in. sync.updates accepts patch/minor/major policies auto, pr, off; defaults to pr, major auto is downgraded to pr. The workflow rejects non-advancing stable versions. Auto policy currently opens a validated PR and reports the requested auto-merge; actual merge remains disabled until required branch checks are verified and a consumer-specific gate is configured. Deploys must be triggered by the consumer's existing main workflow after merge.
+
+## Auto-merge gate
+
+For stable patch/minor updates with auto policy, set consumer repository variable UAI_AUTO_MERGE=true. The workflow checks classic branch protection, administrator enforcement, strict required status checks and a nonempty required-check list. If inspection fails (including ruleset-only repositories or insufficient token permissions), the PR remains manual. GitHub native auto-merge uses squash and the expected head SHA, without admin bypass. Configure the app without bypass privileges and require the consumer's real PR validation checks; deploy remains the consumer's existing main workflow. This gate has not yet been exercised against a live consumer.
