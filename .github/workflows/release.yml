@@ -1,0 +1,38 @@
+name: 🧩 UAI · Release
+on:
+  push:
+    tags: ['v*']
+permissions:
+  contents: write
+concurrency:
+  group: uai-release-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm install
+      - run: npm run typecheck
+      - run: npm run build
+      - name: Generate release bundle
+        env:
+          TAG: ${{ github.ref_name }}
+        run: |
+          version="${TAG#v}"
+          node scripts/release-manifest.mjs "$version"
+          tar -czf "uai-$version.tar.gz" -C "dist/releases/$version" .
+          cp "dist/releases/$version/manifest.json" manifest.json
+      - name: Publish versioned assets
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ github.ref_name }}
+        run: |
+          if gh release view "$TAG" >/dev/null 2>&1; then
+            echo "::error::Release already exists; refusing to replace assets"
+            exit 1
+          fi
+          gh release create "$TAG" --verify-tag --generate-notes "uai-${TAG#v}.tar.gz" manifest.json
