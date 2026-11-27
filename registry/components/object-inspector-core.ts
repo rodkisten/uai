@@ -63,7 +63,12 @@ export function isArray(value: unknown): value is unknown[] {
   return safeCall(() => Array.isArray(value), false);
 }
 
-function toInteger(value: unknown, fallback: number, min: number, max = Number.MAX_SAFE_INTEGER): number {
+function toInteger(
+  value: unknown,
+  fallback: number,
+  min: number,
+  max = Number.MAX_SAFE_INTEGER,
+): number {
   const numeric = Number(value);
   if (!Number.isFinite(numeric)) return fallback;
   return clamp(Math.trunc(numeric), min, max);
@@ -88,19 +93,49 @@ export function normalizeOptions(options: RodInspectorOptions = {}): NormalizedI
     inspectDepth: toInteger(options.inspectDepth, DEFAULT_OPTIONS.inspectDepth, 0, 1_000),
     inspectItems: toInteger(options.inspectItems, DEFAULT_OPTIONS.inspectItems, 0, MAX_SAFE_ITEMS),
     previewItems: toInteger(options.previewItems, DEFAULT_OPTIONS.previewItems, 0, 100),
-    previewMaxLength: toInteger(options.previewMaxLength, DEFAULT_OPTIONS.previewMaxLength, 24, 10_000),
+    previewMaxLength: toInteger(
+      options.previewMaxLength,
+      DEFAULT_OPTIONS.previewMaxLength,
+      24,
+      10_000,
+    ),
     expandDepth: toInteger(options.expandDepth, DEFAULT_OPTIONS.expandDepth, 0, 1_000),
     showPrototype: toBoolean(options.showPrototype, DEFAULT_OPTIONS.showPrototype),
     showNonEnumerable: toBoolean(options.showNonEnumerable, DEFAULT_OPTIONS.showNonEnumerable),
     showObjectLength: toBoolean(options.showObjectLength, DEFAULT_OPTIONS.showObjectLength),
     virtualize: toBoolean(options.virtualize, DEFAULT_OPTIONS.virtualize),
-    virtualizeAfter: toInteger(options.virtualizeAfter, DEFAULT_OPTIONS.virtualizeAfter, 1, MAX_SAFE_ITEMS),
-    virtualRowHeight: toInteger(options.virtualRowHeight, DEFAULT_OPTIONS.virtualRowHeight, 16, 1_000),
+    virtualizeAfter: toInteger(
+      options.virtualizeAfter,
+      DEFAULT_OPTIONS.virtualizeAfter,
+      1,
+      MAX_SAFE_ITEMS,
+    ),
+    virtualRowHeight: toInteger(
+      options.virtualRowHeight,
+      DEFAULT_OPTIONS.virtualRowHeight,
+      16,
+      1_000,
+    ),
     virtualOverscan: toInteger(options.virtualOverscan, DEFAULT_OPTIONS.virtualOverscan, 1, 1_000),
-    virtualMaxHeight: toInteger(options.virtualMaxHeight, DEFAULT_OPTIONS.virtualMaxHeight, 120, 100_000),
-    virtualRowCache: toInteger(options.virtualRowCache, DEFAULT_OPTIONS.virtualRowCache, 0, MAX_SAFE_ITEMS),
+    virtualMaxHeight: toInteger(
+      options.virtualMaxHeight,
+      DEFAULT_OPTIONS.virtualMaxHeight,
+      120,
+      100_000,
+    ),
+    virtualRowCache: toInteger(
+      options.virtualRowCache,
+      DEFAULT_OPTIONS.virtualRowCache,
+      0,
+      MAX_SAFE_ITEMS,
+    ),
     unmountOnCollapse: toBoolean(options.unmountOnCollapse, DEFAULT_OPTIONS.unmountOnCollapse),
-    highlightDuration: toInteger(options.highlightDuration, DEFAULT_OPTIONS.highlightDuration, 0, 60_000),
+    highlightDuration: toInteger(
+      options.highlightDuration,
+      DEFAULT_OPTIONS.highlightDuration,
+      0,
+      60_000,
+    ),
     theme,
     syntaxHighlighting: toBoolean(options.syntaxHighlighting, DEFAULT_OPTIONS.syntaxHighlighting),
   };
@@ -195,7 +230,10 @@ export function safeGetConstructorName(value: object): string {
   let depth = 0;
 
   while (prototype && depth < 4) {
-    const descriptor = safeCall(() => Object.getOwnPropertyDescriptor(prototype, "constructor"), undefined);
+    const descriptor = safeCall(
+      () => Object.getOwnPropertyDescriptor(prototype, "constructor"),
+      undefined,
+    );
     if (descriptor && typeof descriptor.value === "function") {
       const name = safeFunctionName(descriptor.value);
       if (name && name !== "anonymous") return name;
@@ -290,7 +328,10 @@ export function getObjectPreview(
     const count = Math.min(length, previewItems);
 
     for (let index = 0; index < count; index += 1) {
-      const descriptor = safeCall(() => Object.getOwnPropertyDescriptor(value, String(index)), undefined);
+      const descriptor = safeCall(
+        () => Object.getOwnPropertyDescriptor(value, String(index)),
+        undefined,
+      );
       if (!descriptor) parts.push("empty");
       else if (hasOwn(descriptor, "value")) {
         parts.push(getInlinePreview(descriptor.value, options));
@@ -387,7 +428,10 @@ function createArraySource(value: unknown[], options: NormalizedInspectorOptions
     hasMore: length > numericCount || extraTotal > extraEntries.length,
     get(index) {
       if (index < numericCount) {
-        const descriptor = safeCall(() => Object.getOwnPropertyDescriptor(value, String(index)), undefined);
+        const descriptor = safeCall(
+          () => Object.getOwnPropertyDescriptor(value, String(index)),
+          undefined,
+        );
         return createDataEntry(index, descriptor, value);
       }
       return extraEntries[index - numericCount];
@@ -421,7 +465,11 @@ function createObjectSource(value: object, options: NormalizedInspectorOptions):
   };
 }
 
-function withPrototype(source: EntrySource, value: object, options: NormalizedInspectorOptions): EntrySource {
+function withPrototype(
+  source: EntrySource,
+  value: object,
+  options: NormalizedInspectorOptions,
+): EntrySource {
   if (!options.showPrototype) return source;
   const prototype = safeCall(() => Object.getPrototypeOf(value), null);
   if (!prototype) return source;
@@ -457,10 +505,19 @@ export function createEntrySource(value: object, options: NormalizedInspectorOpt
       for (const item of iterator) {
         if (entries.length >= options.inspectItems) break;
         const key = entries.length;
-        entries.push(map ? { kind: "map-entry", key, mapKey: item[0], value: item[1], enumerable: true } : { kind: "set-entry", key, value: item, enumerable: true });
+        entries.push(
+          map
+            ? { kind: "map-entry", key, mapKey: item[0], value: item[1], enumerable: true }
+            : { kind: "set-entry", key, value: item, enumerable: true },
+        );
       }
     }, undefined);
-    source = { count: entries.length, total, hasMore: total > entries.length, get: index => entries[index] };
+    source = {
+      count: entries.length,
+      total,
+      hasMore: total > entries.length,
+      get: (index) => entries[index],
+    };
   } else source = createObjectSource(value, options);
 
   return withPrototype(source, value, options);

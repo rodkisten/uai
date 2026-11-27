@@ -32,15 +32,10 @@ export function InspectorFields({
             <small className="text-muted-foreground">
               {group.keys.filter((k) => values[k]?.trim()).length || ""}
             </small>
-            <ChevronDown
-              size={14}
-              className={open.includes(group.title) ? "rotate-180" : ""}
-            />
+            <ChevronDown size={14} className={open.includes(group.title) ? "rotate-180" : ""} />
           </Button>
           {open.includes(group.title) && (
-            <div className="grid min-w-0 gap-2 px-2 pb-3">
-              {group.keys.map(render)}
-            </div>
+            <div className="grid min-w-0 gap-2 px-2 pb-3">{group.keys.map(render)}</div>
           )}
         </section>
       ))}

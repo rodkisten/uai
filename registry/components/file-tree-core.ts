@@ -1,5 +1,12 @@
 export type FileTreeEntry = { path: string; type: "blob" | "tree"; sha?: string; size?: number };
-export type FileTreeNode = { name: string; path: string; folder: boolean; children: FileTreeNode[]; sha?: string; size?: number };
+export type FileTreeNode = {
+  name: string;
+  path: string;
+  folder: boolean;
+  children: FileTreeNode[];
+  sha?: string;
+  size?: number;
+};
 const compare = (a: FileTreeNode, b: FileTreeNode) =>
   Number(b.folder) - Number(a.folder) || a.name.localeCompare(b.name, undefined, { numeric: true });
 export function buildTree(entries: FileTreeEntry[]): FileTreeNode[] {
@@ -47,7 +54,9 @@ export function filterTree(nodes: FileTreeNode[], term: string): FileTreeNode[] 
     if (node.name.toLocaleLowerCase().includes(needle)) {
       return node;
     }
-    const children = node.children.map(visit).filter((value): value is FileTreeNode => value !== null);
+    const children = node.children
+      .map(visit)
+      .filter((value): value is FileTreeNode => value !== null);
     return children.length ? { ...node, children } : null;
   };
   return nodes.map(visit).filter((value): value is FileTreeNode => value !== null);

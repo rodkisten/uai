@@ -28,7 +28,7 @@ export function PanelNavigation({
           variant={value === item.id ? "default" : "ghost"}
           aria-pressed={value === item.id}
           onClick={() => onChange(item.id)}
-          className="shrink-0 whitespace-nowrap gap-1"
+          className="shrink-0 gap-1 whitespace-nowrap"
         >
           {item.icon}
           {item.label}

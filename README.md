@@ -18,7 +18,7 @@ Build output: `dist/`. Registry items: `dist/r/*.json`.
 In a project initialized with shadcn, merge this entry into `components.json` once the registry is hosted:
 
 ```json
-{"registries":{"@uai":"https://uai.migos.club/r/{name}.json"}}
+{ "registries": { "@uai": "https://uai.migos.club/r/{name}.json" } }
 ```
 
 Then install a component with `pnpm dlx shadcn@latest add @uai/code-editor`. The hostname is planned, not yet live. Registry dependencies use the same namespace.

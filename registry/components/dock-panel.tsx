@@ -7,8 +7,13 @@ import * as Dialog from "@radix-ui/react-dialog";
 export function DockHeader({ title, closeLabel }: { title: string; closeLabel: string }) {
   return (
     <header className="panel-header flex shrink-0 items-center justify-between gap-2 border-b border-border p-3">
-      <Dialog.Title className="panel-title text-sm font-semibold text-foreground">{title}</Dialog.Title>
-      <Dialog.Close className="btn btn--icon inline-flex size-8 items-center justify-center rounded-md hover:bg-muted focus-visible:ring-2 focus-visible:ring-ring" aria-label={closeLabel}>
+      <Dialog.Title className="panel-title text-sm font-semibold text-foreground">
+        {title}
+      </Dialog.Title>
+      <Dialog.Close
+        className="btn btn--icon inline-flex size-8 items-center justify-center rounded-md hover:bg-muted focus-visible:ring-2 focus-visible:ring-ring"
+        aria-label={closeLabel}
+      >
         <X size={16} aria-hidden="true" />
       </Dialog.Close>
     </header>
@@ -46,7 +51,13 @@ export function DockSearch({
   );
 }
 
-export function DockOverlay({ secondary = false, onClose }: { secondary?: boolean; onClose: () => void }) {
+export function DockOverlay({
+  secondary = false,
+  onClose,
+}: {
+  secondary?: boolean;
+  onClose: () => void;
+}) {
   return (
     <div
       className={`overlay fixed inset-0 bg-black/50 ${secondary ? "overlay--secondary z-[61]" : "z-[59]"}`}
@@ -80,11 +91,16 @@ export function DockPanel({
     <Dialog.Root modal={false} open={open} onOpenChange={onOpenChange}>
       <Dialog.Portal container={portal}>
         {open && <DockOverlay secondary={secondary} onClose={() => onOpenChange(false)} />}
-        <Dialog.Content className={`panel fixed inset-x-0 bottom-0 flex max-h-[85dvh] flex-col overflow-hidden rounded-t-xl border border-border bg-background text-foreground shadow-xl sm:inset-x-auto sm:right-4 sm:w-[420px] ${secondary ? "z-[62]" : "z-[60]"}`} {...(!description ? { "aria-describedby": undefined } : {})}>
+        <Dialog.Content
+          className={`panel fixed inset-x-0 bottom-0 flex max-h-[85dvh] flex-col overflow-hidden rounded-t-xl border border-border bg-background text-foreground shadow-xl sm:inset-x-auto sm:right-4 sm:w-[420px] ${secondary ? "z-[62]" : "z-[60]"}`}
+          {...(!description ? { "aria-describedby": undefined } : {})}
+        >
           <DockHeader title={title} closeLabel={closeLabel} />
           <div className="panel-body min-h-0 flex-1 overflow-y-auto overscroll-contain p-3">
             {description && (
-              <Dialog.Description className="panel-description mb-2 text-sm text-muted-foreground">{description}</Dialog.Description>
+              <Dialog.Description className="panel-description mb-2 text-sm text-muted-foreground">
+                {description}
+              </Dialog.Description>
             )}
             {children}
           </div>
