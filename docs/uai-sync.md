@@ -18,3 +18,7 @@ Next: dependency closure, safe installation and lock generation, reusable workfl
 ## Installer
 
 Run `node sync-install.mjs /path/to/extracted-release` in the consumer root for a dry run. Add `--apply` only in a clean disposable checkout. Internal registry dependencies are resolved recursively; external shadcn dependencies must be supplied by the consumer and explicitly listed in `externalRegistryDependencies`. npm dependencies are reported, not installed. Optional per-component `targets` maps source paths to local paths; source bytes are not rewritten. Existing modified, missing managed, or conflicting unmanaged files abort before writes. Removed or relocated files require explicit migration. Writes are staged but the final multi-file rename is not transactional. The lock records exact installed bytes. Automated workflow must validate dependencies, typecheck and build before committing.
+
+## Reusable workflow
+
+Call .github/workflows/sync.yml with a release version and a full trusted installer commit SHA. Provide a consumer-scoped write token (prefer a short-lived GitHub App installation token) and optionally a UAI read token. The initial workflow supports npm consumers with existing dependencies, typecheck and build scripts. It opens a version-specific PR only after validation; existing sync branches are deliberately not overwritten. No automatic merge or deployment yet. Keep caller and installer refs pinned to reviewed commits. The archive is trusted from the UAI release publisher; enable immutable releases and restrict release permissions.
