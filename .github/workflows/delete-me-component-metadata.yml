@@ -1,0 +1,49 @@
+name: DELETE ME - Bootstrap component metadata
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: uai-metadata-bootstrap
+  cancel-in-progress: false
+jobs:
+  bootstrap:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10
+      - run: pnpm install --frozen-lockfile
+      - name: Generate component metadata
+        run: |
+          node --input-type=module <<'JS'
+          import { readFile, mkdir, writeFile } from 'node:fs/promises';
+          const registry = JSON.parse(await readFile('registry.json', 'utf8'));
+          for (const item of registry.items) {
+            if (!/^[a-z0-9-]+$/.test(item.name)) throw new Error('Invalid name');
+            const dir = 'registry/components/' + item.name;
+            await mkdir(dir, { recursive: true });
+            const manifest = { schemaVersion: 1, name: item.name, version: null, publishedSha: null, files: item.files, dependencies: item.dependencies ?? [], registryDependencies: item.registryDependencies ?? [] };
+            await writeFile(dir + '/component.json', JSON.stringify(manifest, null, 2) + '\n', { flag: 'wx' });
+            await writeFile(dir + '/CHANGELOG.md', '# Changelog\n\nNo independent release recorded yet.\n', { flag: 'wx' });
+          }
+          JS
+      - run: pnpm exec prettier --write "registry/components/*/component.json" "registry/components/*/CHANGELOG.md"
+      - run: pnpm lint
+      - run: pnpm typecheck
+      - run: pnpm build
+      - uses: rodkisten/github/src/publish@main
+        with:
+          app-id: ${{ vars.PLOOCKY_APP_ID }}
+          private-key: ${{ secrets.PLOOCKY_PRIVATE_KEY }}
+          mode: pull-request
+          branch: automation/component-metadata
+          base-branch: main
+          commit-message: "chore(registry): bootstrap component metadata"
+          pr-title: "chore(registry): bootstrap independent component metadata"
+          pr-body: "Initialize per-component manifests and changelogs without moving source files or changing installation targets. Versions remain unset until release history is reconciled."
