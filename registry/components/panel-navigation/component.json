@@ -1,0 +1,15 @@
+{
+  "schemaVersion": 1,
+  "name": "panel-navigation",
+  "version": null,
+  "publishedSha": null,
+  "files": [
+    {
+      "path": "registry/components/panel-navigation.tsx",
+      "type": "registry:component",
+      "target": "components/uai/panel-navigation.tsx"
+    }
+  ],
+  "dependencies": [],
+  "registryDependencies": ["button"]
+}

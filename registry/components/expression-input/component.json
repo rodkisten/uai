@@ -1,0 +1,15 @@
+{
+  "schemaVersion": 1,
+  "name": "expression-input",
+  "version": null,
+  "publishedSha": null,
+  "files": [
+    {
+      "path": "registry/components/expression-input.tsx",
+      "type": "registry:component",
+      "target": "components/uai/expression-input.tsx"
+    }
+  ],
+  "dependencies": [],
+  "registryDependencies": ["@uai/code-editor"]
+}

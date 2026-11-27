@@ -1,0 +1,15 @@
+{
+  "schemaVersion": 1,
+  "name": "schema-form",
+  "version": null,
+  "publishedSha": null,
+  "files": [
+    {
+      "path": "registry/components/schema-form.tsx",
+      "type": "registry:component",
+      "target": "components/uai/schema-form.tsx"
+    }
+  ],
+  "dependencies": ["@radix-ui/react-switch", "@radix-ui/react-checkbox"],
+  "registryDependencies": ["input"]
+}

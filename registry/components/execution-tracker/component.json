@@ -1,0 +1,15 @@
+{
+  "schemaVersion": 1,
+  "name": "execution-tracker",
+  "version": null,
+  "publishedSha": null,
+  "files": [
+    {
+      "path": "registry/components/execution-tracker.tsx",
+      "type": "registry:component",
+      "target": "components/uai/execution-tracker.tsx"
+    }
+  ],
+  "dependencies": ["lucide-react"],
+  "registryDependencies": []
+}

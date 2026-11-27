@@ -1,0 +1,15 @@
+{
+  "schemaVersion": 1,
+  "name": "key-value-editor",
+  "version": null,
+  "publishedSha": null,
+  "files": [
+    {
+      "path": "registry/components/key-value-editor.tsx",
+      "type": "registry:component",
+      "target": "components/uai/key-value-editor.tsx"
+    }
+  ],
+  "dependencies": ["lucide-react"],
+  "registryDependencies": ["button", "input"]
+}

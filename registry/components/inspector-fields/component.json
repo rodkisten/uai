@@ -1,0 +1,15 @@
+{
+  "schemaVersion": 1,
+  "name": "inspector-fields",
+  "version": null,
+  "publishedSha": null,
+  "files": [
+    {
+      "path": "registry/components/inspector-fields.tsx",
+      "type": "registry:component",
+      "target": "components/uai/inspector-fields.tsx"
+    }
+  ],
+  "dependencies": ["lucide-react"],
+  "registryDependencies": ["button"]
+}
