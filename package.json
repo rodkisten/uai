@@ -8,7 +8,12 @@
     "smoke:hosting": "node scripts/smoke-hosting.mjs",
     "release:manifest": "node scripts/release-manifest.mjs",
     "sync:plan": "node scripts/sync-plan.mjs",
-    "sync:install": "node scripts/sync-install.mjs"
+    "sync:install": "node scripts/sync-install.mjs",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "check": "pnpm lint && pnpm typecheck && pnpm build"
   },
   "devDependencies": {
     "shadcn": "latest",
@@ -16,7 +21,14 @@
     "typescript": "latest",
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
-    "@vitejs/plugin-react": "latest"
+    "@vitejs/plugin-react": "latest",
+    "prettier": "^3.6.2",
+    "eslint": "^9.39.0",
+    "@eslint/js": "^9.39.0",
+    "typescript-eslint": "^8.46.0",
+    "globals": "^16.4.0",
+    "eslint-config-prettier": "^10.1.8",
+    "prettier-plugin-tailwindcss": "^0.6.14"
   },
   "dependencies": {
     "react": "^19.0.0",
