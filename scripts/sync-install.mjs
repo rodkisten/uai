@@ -68,7 +68,7 @@ for(const name of wanted){
  }
  next.components[name]={sha256:item.sha256,files};
 }
-for(const [path,owner] of owners)if(!writes.has(path))throw new Error("Removed or relocated managed file requires explicit migration: "+path);
+for(const path of owners.keys())if(!writes.has(path))throw new Error("Removed or relocated managed file requires explicit migration: "+path);
 console.log(JSON.stringify({version:release.version,components:[...wanted],changes,npmDependencies:[...npm],externalRegistryDependencies:[...external]},null,2));
 if(mode==="--apply"){
  if(external.size) {

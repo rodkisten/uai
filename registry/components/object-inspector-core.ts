@@ -1,5 +1,4 @@
 import type {
-  DataEntry,
   EntrySource,
   InspectorEntry,
   NormalizedInspectorOptions,
@@ -129,7 +128,7 @@ export function safeKeyText(key: RodInspectorPropertyKey): string {
   return safeCall(() => String(key), "[Unprintable key]");
 }
 
-export function safeFunctionName(value: Function): string {
+export function safeFunctionName(value: { readonly name?: string }): string {
   const descriptor = safeCall(() => Object.getOwnPropertyDescriptor(value, "name"), undefined);
   if (descriptor && typeof descriptor.value === "string") {
     return descriptor.value || "anonymous";
