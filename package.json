@@ -5,7 +5,9 @@
     "build": "shadcn build --output public/r && vite build && node scripts/verify-registry.mjs",
     "typecheck": "tsc --noEmit",
     "dev": "vite",
-    "smoke:hosting": "node scripts/smoke-hosting.mjs"
+    "smoke:hosting": "node scripts/smoke-hosting.mjs",
+    "release:manifest": "node scripts/release-manifest.mjs",
+    "sync:plan": "node scripts/sync-plan.mjs"
   },
   "devDependencies": {
     "shadcn": "latest",
