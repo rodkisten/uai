@@ -22,3 +22,7 @@ Run `node sync-install.mjs /path/to/extracted-release` in the consumer root for 
 ## Reusable workflow
 
 Call .github/workflows/sync.yml with a release version and a full trusted installer commit SHA. Provide a consumer-scoped write token (prefer a short-lived GitHub App installation token) and optionally a UAI read token. The initial workflow supports npm consumers with existing dependencies, typecheck and build scripts. It opens a version-specific PR only after validation; existing sync branches are deliberately not overwritten. No automatic merge or deployment yet. Keep caller and installer refs pinned to reviewed commits. The archive is trusted from the UAI release publisher; enable immutable releases and restrict release permissions.
+
+## Distribution
+
+Configure GITHUB_APP_ID and GITHUB_APP_PRIVATE_KEY with an installation authorized for the listed repositories and contents write permission for repository dispatch. Consumers are disabled until their manifests, locks and receiver workflows exist on main. Manually dispatch distribute.yml with a release version; dry run is default. Enable dispatch explicitly to send uai-release events only to consumers with changed component hashes, including internal dependencies. Automatic release chaining is not enabled yet.
