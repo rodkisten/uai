@@ -1,0 +1,45 @@
+name: Temporary quality normalization
+on:
+  push:
+    branches: [chore/code-quality]
+permissions:
+  contents: write
+concurrency:
+  group: uai-normalize
+  cancel-in-progress: false
+jobs:
+  normalize:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10
+      - run: pnpm install --no-frozen-lockfile
+      - run: pnpm lint:fix
+      - name: Enable strict quality checks
+        run: |
+          node --input-type=module <<'JS'
+          import fs from 'node:fs';
+          const path='.github/workflows/quality.yml';
+          let text=fs.readFileSync(path,'utf8');
+          text=text.replace('pnpm install --no-frozen-lockfile','pnpm install --frozen-lockfile').replace(/      - name: Format workspace\n        run: pnpm format\n/,'');
+          fs.writeFileSync(path,text);
+          JS
+      - run: pnpm format
+      - run: pnpm format:check
+      - run: pnpm lint
+      - run: pnpm typecheck
+      - run: pnpm build
+      - name: Commit normalized workspace and remove temporary workflow
+        run: |
+          git rm .github/workflows/normalize-once.yml
+          git add -u
+          git add -f pnpm-lock.yaml
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "style: normalize workspace and enforce strict quality checks"
+          git push origin HEAD:refs/heads/chore/code-quality
