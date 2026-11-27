@@ -211,6 +211,28 @@
           "target": "components/uai/object-inspector.tsx"
         }
       ]
+    },
+    {
+      "name": "file-tree",
+      "type": "registry:component",
+      "title": "File Tree",
+      "description": "Provider-independent file tree with selection and lazy loading.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "registry/components/file-tree.tsx",
+          "type": "registry:component",
+          "target": "components/uai/file-tree.tsx"
+        },
+        {
+          "path": "registry/components/file-tree-core.ts",
+          "type": "registry:component",
+          "target": "components/uai/file-tree-core.ts"
+        }
+      ]
     }
   ]
 }
