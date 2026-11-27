@@ -1,5 +1,16 @@
 name: UAI Consumer Distribution
 on:
+  workflow_call:
+    inputs:
+      version:
+        required: true
+        type: string
+      dispatch:
+        type: boolean
+        default: false
+    secrets:
+      GITHUB_APP_PRIVATE_KEY:
+        required: true
   workflow_dispatch:
     inputs:
       version:

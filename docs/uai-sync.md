@@ -26,3 +26,7 @@ Call .github/workflows/sync.yml with a release version and a full trusted instal
 ## Distribution
 
 Configure GITHUB_APP_ID and GITHUB_APP_PRIVATE_KEY with an installation authorized for the listed repositories and contents write permission for repository dispatch. Consumers are disabled until their manifests, locks and receiver workflows exist on main. Manually dispatch distribute.yml with a release version; dry run is default. Enable dispatch explicitly to send uai-release events only to consumers with changed component hashes, including internal dependencies. Automatic release chaining is not enabled yet.
+
+## Release chaining and policy
+
+Set UAI_AUTO_DISTRIBUTE=true to chain distribution after successful release publication. Consumers remain individually opt-in. sync.updates accepts patch/minor/major policies auto, pr, off; defaults to pr, major auto is downgraded to pr. The workflow rejects non-advancing stable versions. Auto policy currently opens a validated PR and reports the requested auto-merge; actual merge remains disabled until required branch checks are verified and a consumer-specific gate is configured. Deploys must be triggered by the consumer's existing main workflow after merge.
