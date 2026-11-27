@@ -185,6 +185,31 @@
           "target": "components/uai/workbench-layout.tsx"
         }
       ]
+    },
+    {
+      "name": "object-inspector",
+      "type": "registry:component",
+      "title": "Object Inspector",
+      "description": "Expandable JavaScript value inspector with bounded depth and collection support.",
+      "dependencies": [],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "registry/components/object-inspector-core.ts",
+          "type": "registry:component",
+          "target": "components/uai/object-inspector-core.ts"
+        },
+        {
+          "path": "registry/components/object-inspector-types.ts",
+          "type": "registry:component",
+          "target": "components/uai/object-inspector-types.ts"
+        },
+        {
+          "path": "registry/components/object-inspector.tsx",
+          "type": "registry:component",
+          "target": "components/uai/object-inspector.tsx"
+        }
+      ]
     }
   ]
 }
