@@ -1,0 +1,21 @@
+{
+  "schemaVersion": 1,
+  "consumers": [
+    {
+      "repository": "rodkisten/userscripts-cf",
+      "enabled": false
+    },
+    {
+      "repository": "rodkisten/orb",
+      "enabled": false
+    },
+    {
+      "repository": "rodkisten/shell",
+      "enabled": false
+    },
+    {
+      "repository": "rodkisten/jardim",
+      "enabled": false
+    }
+  ]
+}

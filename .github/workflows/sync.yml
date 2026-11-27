@@ -1,0 +1,114 @@
+name: UAI Sync
+on:
+  workflow_call:
+    inputs:
+      version:
+        required: true
+        type: string
+      installer_ref:
+        required: true
+        type: string
+      node_version:
+        type: string
+        default: '22'
+    secrets:
+      UAI_READ_TOKEN:
+        required: false
+      UAI_WRITE_TOKEN:
+        required: true
+permissions:
+  contents: read
+concurrency:
+  group: uai-sync-${{ github.repository }}
+  cancel-in-progress: false
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.repository.default_branch }}
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ inputs.node_version }}
+      - name: Read consumer update policy
+        id: policy
+        env:
+          VERSION: ${{ inputs.version }}
+        run: |
+          node --input-type=module <<'JS' >> "$GITHUB_OUTPUT"
+          import fs from "node:fs";
+          const config=JSON.parse(fs.readFileSync("uai.json","utf8"));
+          const lock=JSON.parse(fs.readFileSync("uai.lock.json","utf8"));
+          const parse=v=>{if(!/^\\d+\\.\\d+\\.\\d+$/.test(v??""))return null;return v.split(".").map(Number)};
+          const old=parse(lock.version), next=parse(process.env.VERSION);
+          let kind="major";
+          if(old&&next){const i=next.findIndex((n,i)=>n!==old[i]);if(i<0||next[i]<old[i])throw Error("Release must advance installed version");kind=["major","minor","patch"][i];}
+          const policy=config.sync?.updates?.[kind]??"pr";
+          if(!["auto","pr","off"].includes(policy))throw Error("Invalid update policy");
+          console.log("policy="+(kind==="major"&&policy==="auto"?"pr":policy));
+          JS
+      - name: Download pinned release and installer
+        if: steps.policy.outputs.policy != 'off'
+        env:
+          GH_TOKEN: ${{ secrets.UAI_READ_TOKEN || github.token }}
+          VERSION: ${{ inputs.version }}
+          INSTALLER_REF: ${{ inputs.installer_ref }}
+        run: |
+          set -euo pipefail
+          [[ "$VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+(-[a-zA-Z0-9.-]+)?$ ]]
+          [[ "$INSTALLER_REF" =~ ^[0-9a-f]{40}$ ]]
+          mkdir -p "$RUNNER_TEMP/uai-bundle"
+          gh release download "v$VERSION" -R rodkisten/uai -p "uai-$VERSION.tar.gz" -D "$RUNNER_TEMP"
+          tar -xzf "$RUNNER_TEMP/uai-$VERSION.tar.gz" -C "$RUNNER_TEMP/uai-bundle" --no-same-owner --no-same-permissions
+          gh api "repos/rodkisten/uai/contents/scripts/sync-install.mjs?ref=$INSTALLER_REF" -H 'Accept: application/vnd.github.raw+json' > "$RUNNER_TEMP/sync-install.mjs"
+          node "$RUNNER_TEMP/sync-install.mjs" "$RUNNER_TEMP/uai-bundle" --apply
+      - name: Validate consumer
+        if: steps.policy.outputs.policy != 'off'
+        run: |
+          npm ci
+          npm run typecheck
+          npm run build
+      - name: Open sync PR
+        if: steps.policy.outputs.policy != 'off'
+        env:
+          GH_TOKEN: ${{ secrets.UAI_WRITE_TOKEN }}
+          VERSION: ${{ inputs.version }}
+          BASE: ${{ github.event.repository.default_branch }}
+          POLICY: ${{ steps.policy.outputs.policy }}
+          AUTO_MERGE_ENABLED: ${{ vars.UAI_AUTO_MERGE }}
+        run: |
+          set -euo pipefail
+          git add -A
+          if git diff --cached --quiet; then exit 0; fi
+          branch="uai/sync-v$VERSION"
+          git config user.name "UAI Sync"
+          git config user.email "uai-sync@users.noreply.github.com"
+          git switch -c "$branch"
+          git commit -m "chore: sync UAI v$VERSION"
+          gh auth setup-git
+          if git ls-remote --exit-code --heads origin "$branch" >/dev/null 2>&1; then
+            echo "::error::Sync branch already exists; review existing PR before retrying"
+            exit 1
+          fi
+          git push origin "$branch"
+          pr=$(gh pr create --base "$BASE" --head "$branch" --title "chore: sync UAI v$VERSION" --body "Verified UAI release assets; consumer typecheck and build passed.")
+          if [[ "$POLICY" == auto ]]; then
+            if [[ "$AUTO_MERGE_ENABLED" != true ]]; then
+              echo "::notice::Auto-merge disabled by repository opt-in"
+            else
+              encoded_base=$(jq -rn --arg value "$BASE" '$value|@uri')
+              protection=$(gh api "repos/$GITHUB_REPOSITORY/branches/$encoded_base/protection" 2>/dev/null || true)
+              if [[ -z "$protection" ]] || ! jq -e '
+                .enforce_admins.enabled == true and
+                .required_status_checks.strict == true and
+                (((.required_status_checks.contexts // []) + (.required_status_checks.checks // [])) | length > 0)
+              ' <<< "$protection" >/dev/null; then
+                echo "::warning::Required classic branch protection could not be verified; leaving PR for review"
+              elif ! gh pr merge "$pr" --auto --squash --match-head-commit "$(git rev-parse HEAD)"; then
+                echo "::warning::GitHub refused auto-merge; leaving PR for review"
+              fi
+            fi
+          fi
+          echo "$pr"

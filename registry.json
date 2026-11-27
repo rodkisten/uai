@@ -50,7 +50,8 @@
         "@codemirror/view",
         "@codemirror/state",
         "@codemirror/lang-yaml",
-        "@codemirror/theme-one-dark"
+        "@codemirror/theme-one-dark",
+        "@codemirror/lang-javascript"
       ],
       "registryDependencies": [
         "button"
@@ -105,7 +106,10 @@
       "type": "registry:component",
       "title": "schema-form",
       "description": "Shared schema-form component",
-      "dependencies": [],
+      "dependencies": [
+        "@radix-ui/react-switch",
+        "@radix-ui/react-checkbox"
+      ],
       "registryDependencies": [
         "input"
       ],
@@ -180,6 +184,71 @@
           "path": "registry/components/workbench-layout.tsx",
           "type": "registry:component",
           "target": "components/uai/workbench-layout.tsx"
+        }
+      ]
+    },
+    {
+      "name": "object-inspector",
+      "type": "registry:component",
+      "title": "Object Inspector",
+      "description": "Expandable JavaScript value inspector with bounded depth and collection support.",
+      "dependencies": [],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "registry/components/object-inspector-core.ts",
+          "type": "registry:component",
+          "target": "components/uai/object-inspector-core.ts"
+        },
+        {
+          "path": "registry/components/object-inspector-types.ts",
+          "type": "registry:component",
+          "target": "components/uai/object-inspector-types.ts"
+        },
+        {
+          "path": "registry/components/object-inspector.tsx",
+          "type": "registry:component",
+          "target": "components/uai/object-inspector.tsx"
+        }
+      ]
+    },
+    {
+      "name": "file-tree",
+      "type": "registry:component",
+      "title": "File Tree",
+      "description": "Provider-independent file tree with selection and lazy loading.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "registry/components/file-tree.tsx",
+          "type": "registry:component",
+          "target": "components/uai/file-tree.tsx"
+        },
+        {
+          "path": "registry/components/file-tree-core.ts",
+          "type": "registry:component",
+          "target": "components/uai/file-tree-core.ts"
+        }
+      ]
+    },
+    {
+      "name": "dock-panel",
+      "type": "registry:component",
+      "title": "Dock Panel",
+      "description": "Controlled Radix dialog panel with explicit portal and mobile scrolling.",
+      "dependencies": [
+        "@radix-ui/react-dialog",
+        "lucide-react"
+      ],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "registry/components/dock-panel.tsx",
+          "type": "registry:component",
+          "target": "components/uai/dock-panel.tsx"
         }
       ]
     }

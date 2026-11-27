@@ -5,7 +5,10 @@
     "build": "shadcn build --output public/r && vite build && node scripts/verify-registry.mjs",
     "typecheck": "tsc --noEmit",
     "dev": "vite",
-    "smoke:hosting": "node scripts/smoke-hosting.mjs"
+    "smoke:hosting": "node scripts/smoke-hosting.mjs",
+    "release:manifest": "node scripts/release-manifest.mjs",
+    "sync:plan": "node scripts/sync-plan.mjs",
+    "sync:install": "node scripts/sync-install.mjs"
   },
   "devDependencies": {
     "shadcn": "latest",
@@ -32,6 +35,9 @@
     "@codemirror/theme-one-dark": "latest",
     "@radix-ui/react-tabs": "latest",
     "@codemirror/lang-javascript": "latest",
-    "@tanstack/react-router": "latest"
+    "@tanstack/react-router": "latest",
+    "@radix-ui/react-switch": "latest",
+    "@radix-ui/react-checkbox": "latest",
+    "@radix-ui/react-dialog": "latest"
   }
 }

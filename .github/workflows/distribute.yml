@@ -1,0 +1,50 @@
+name: UAI Consumer Distribution
+on:
+  workflow_call:
+    inputs:
+      version:
+        required: true
+        type: string
+      dispatch:
+        type: boolean
+        default: false
+    secrets:
+      GITHUB_APP_PRIVATE_KEY:
+        required: true
+  workflow_dispatch:
+    inputs:
+      version:
+        required: true
+        type: string
+      dispatch:
+        type: boolean
+        default: false
+permissions:
+  contents: read
+jobs:
+  distribute:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - uses: actions/create-github-app-token@v2
+        id: app
+        with:
+          app-id: ${{ vars.GITHUB_APP_ID }}
+          private-key: ${{ secrets.GITHUB_APP_PRIVATE_KEY }}
+          owner: rodkisten
+          repositories: uai,userscripts-cf,orb,shell,jardim
+      - name: Plan or dispatch
+        env:
+          GH_TOKEN: ${{ steps.app.outputs.token }}
+          VERSION: ${{ inputs.version }}
+          DISPATCH: ${{ inputs.dispatch }}
+        run: |
+          set -euo pipefail
+          [[ "$VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+(-[a-zA-Z0-9.-]+)?$ ]]
+          gh release download "v$VERSION" -R rodkisten/uai -p manifest.json -D "$RUNNER_TEMP"
+          args=()
+          if [[ "$DISPATCH" == true ]]; then args+=(--dispatch); fi
+          node scripts/dispatch-consumers.mjs "$RUNNER_TEMP/manifest.json" "${args[@]}"

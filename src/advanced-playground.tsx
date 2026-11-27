@@ -6,11 +6,11 @@ import {KeyValueEditor,type KeyValueRow} from "../registry/components/key-value-
 import {InspectorFields} from "../registry/components/inspector-fields";
 import {Input} from "./components/ui/input";
 import {Button} from "./components/ui/button";
-const fields:SchemaField[]=[{id:"name",label:"Workflow name",type:"string",required:true},{id:"environment",label:"Environment",type:"environment",options:["preview","production"]},{id:"retries",label:"Retries",type:"number"},{id:"dry",label:"Dry run",type:"boolean"}];
+const fields:SchemaField[]=[{id:"name",label:"Workflow name",type:"string",required:true},{id:"environment",label:"Environment",type:"environment",options:["preview","production"]},{id:"retries",label:"Retries",type:"number"},{id:"dry",label:"Dry run",type:"boolean"}, {id:"notify",label:"Notify on failure",type:"switch",description:"Send a notification when the workflow fails."},{id:"confirm",label:"Confirm deployment",type:"checkbox"},{id:"timeout",label:"Timeout (minutes)",type:"range",min:1,max:60,step:1},{id:"notes",label:"Notes",type:"textarea",placeholder:"Deployment notes"},{id:"strategy",label:"Strategy",type:"choice",options:[{label:"Rolling update",value:"rolling"},{label:"Blue / green",value:"blue-green"}]}];
 export function AdvancedPlayground({name}:{name:string}){
  const [code,setCode]=useState(name==="expression-input"?"steps.build.outputs.url":"name: Build\nsteps:\n  - run: pnpm build");
  const [disabled,setDisabled]=useState(false);
- const [values,setValues]=useState<Record<string,string>>({name:"Build",environment:"preview",retries:"2",dry:"true"});
+ const [values,setValues]=useState<Record<string,string>>({name:"Build",environment:"preview",retries:"2",dry:"true",notify:"true",confirm:"false",timeout:"15",notes:"",strategy:"rolling"});
  const [rows,setRows]=useState<KeyValueRow[]>([{id:"initial",key:"NODE_ENV",value:"production"}]);
  const update=(id:string,value:string)=>setValues(v=>({...v,[id]:value}));
  const suggestions=["steps.build.outputs.url","github.sha","env.NODE_ENV","inputs.environment"];
