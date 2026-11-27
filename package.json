@@ -7,7 +7,8 @@
     "dev": "vite",
     "smoke:hosting": "node scripts/smoke-hosting.mjs",
     "release:manifest": "node scripts/release-manifest.mjs",
-    "sync:plan": "node scripts/sync-plan.mjs"
+    "sync:plan": "node scripts/sync-plan.mjs",
+    "sync:install": "node scripts/sync-install.mjs"
   },
   "devDependencies": {
     "shadcn": "latest",

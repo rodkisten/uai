@@ -14,3 +14,7 @@ Consumer uai.lock.json records installed component hashes and actual local file 
 Run `node sync-plan.mjs release.json` from the consumer root. The planner reports install/update/unchanged/conflict/missing and exits 2 for conflicts or missing items. It never writes consumer files.
 
 Next: dependency closure, safe installation and lock generation, reusable workflow, GitHub App dispatch, PR validation and deploy integration. Do not enable auto-merge before those gates exist.
+
+## Installer
+
+Run `node sync-install.mjs /path/to/extracted-release` in the consumer root for a dry run. Add `--apply` only in a clean disposable checkout. Internal registry dependencies are resolved recursively; external shadcn dependencies must be supplied by the consumer and explicitly listed in `externalRegistryDependencies`. npm dependencies are reported, not installed. Optional per-component `targets` maps source paths to local paths; source bytes are not rewritten. Existing modified, missing managed, or conflicting unmanaged files abort before writes. Removed or relocated files require explicit migration. Writes are staged but the final multi-file rename is not transactional. The lock records exact installed bytes. Automated workflow must validate dependencies, typecheck and build before committing.
