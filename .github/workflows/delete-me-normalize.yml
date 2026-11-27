@@ -1,7 +1,8 @@
-name: Temporary quality normalization
+name: 🧹 DELETE ME · Normalize
 on:
-  push:
-    branches: [chore/code-quality]
+  pull_request:
+    types: [opened, synchronize, reopened]
+    branches: [main]
 permissions:
   contents: write
 concurrency:
@@ -9,9 +10,12 @@ concurrency:
   cancel-in-progress: false
 jobs:
   normalize:
+    if: github.event.pull_request.head.repo.full_name == github.repository && github.head_ref == 'chore/code-quality'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
       - uses: actions/setup-node@v4
         with:
           node-version: 24
@@ -36,7 +40,7 @@ jobs:
       - run: pnpm build
       - name: Commit normalized workspace and remove temporary workflow
         run: |
-          git rm .github/workflows/normalize-once.yml
+          git rm .github/workflows/delete-me-normalize.yml
           git add -u
           git add -f pnpm-lock.yaml
           git config user.name "github-actions[bot]"
