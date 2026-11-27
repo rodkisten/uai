@@ -1,0 +1,15 @@
+{
+  "schemaVersion": 1,
+  "name": "patch-review",
+  "version": null,
+  "publishedSha": null,
+  "files": [
+    {
+      "path": "registry/components/patch-review.tsx",
+      "type": "registry:component",
+      "target": "components/uai/patch-review.tsx"
+    }
+  ],
+  "dependencies": [],
+  "registryDependencies": []
+}

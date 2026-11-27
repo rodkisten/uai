@@ -1,0 +1,15 @@
+{
+  "schemaVersion": 1,
+  "name": "session-alert",
+  "version": null,
+  "publishedSha": null,
+  "files": [
+    {
+      "path": "registry/components/session-alert.tsx",
+      "type": "registry:component",
+      "target": "components/uai/session-alert.tsx"
+    }
+  ],
+  "dependencies": ["lucide-react"],
+  "registryDependencies": ["button"]
+}

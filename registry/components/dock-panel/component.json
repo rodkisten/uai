@@ -1,0 +1,15 @@
+{
+  "schemaVersion": 1,
+  "name": "dock-panel",
+  "version": null,
+  "publishedSha": null,
+  "files": [
+    {
+      "path": "registry/components/dock-panel.tsx",
+      "type": "registry:component",
+      "target": "components/uai/dock-panel.tsx"
+    }
+  ],
+  "dependencies": ["@radix-ui/react-dialog", "lucide-react"],
+  "registryDependencies": []
+}

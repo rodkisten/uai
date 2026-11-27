@@ -1,0 +1,20 @@
+{
+  "schemaVersion": 1,
+  "name": "file-tree",
+  "version": null,
+  "publishedSha": null,
+  "files": [
+    {
+      "path": "registry/components/file-tree.tsx",
+      "type": "registry:component",
+      "target": "components/uai/file-tree.tsx"
+    },
+    {
+      "path": "registry/components/file-tree-core.ts",
+      "type": "registry:component",
+      "target": "components/uai/file-tree-core.ts"
+    }
+  ],
+  "dependencies": ["lucide-react"],
+  "registryDependencies": []
+}

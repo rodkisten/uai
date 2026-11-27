@@ -1,0 +1,15 @@
+{
+  "schemaVersion": 1,
+  "name": "workbench-layout",
+  "version": null,
+  "publishedSha": null,
+  "files": [
+    {
+      "path": "registry/components/workbench-layout.tsx",
+      "type": "registry:component",
+      "target": "components/uai/workbench-layout.tsx"
+    }
+  ],
+  "dependencies": [],
+  "registryDependencies": []
+}
