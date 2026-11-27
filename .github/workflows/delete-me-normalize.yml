@@ -13,9 +13,18 @@ jobs:
     if: github.event.pull_request.head.repo.full_name == github.repository && github.head_ref == 'chore/code-quality'
     runs-on: ubuntu-latest
     steps:
+      - name: Create maintenance app token
+        id: app
+        uses: actions/create-github-app-token@v2
+        with:
+          app-id: ${{ vars.GITHUB_APP_ID }}
+          private-key: ${{ secrets.GITHUB_APP_PRIVATE_KEY }}
+          permission-contents: write
+          permission-workflows: write
       - uses: actions/checkout@v4
         with:
           ref: ${{ github.event.pull_request.head.sha }}
+          token: ${{ steps.app.outputs.token }}
       - uses: actions/setup-node@v4
         with:
           node-version: 24
@@ -45,5 +54,5 @@ jobs:
           git add -f pnpm-lock.yaml
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git commit -m "style: normalize workspace and enforce strict quality checks"
+          git commit -m "style: normalize workspace and enforce strict quality checks [deploy]"
           git push origin HEAD:refs/heads/chore/code-quality
