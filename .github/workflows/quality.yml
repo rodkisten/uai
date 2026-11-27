@@ -14,9 +14,7 @@ jobs:
       - uses: pnpm/action-setup@v4
         with:
           version: 10
-      - run: pnpm install --no-frozen-lockfile
-      - name: Format workspace
-        run: pnpm format
+      - run: pnpm install --frozen-lockfile
       - name: Verify formatting
         run: pnpm format:check
       - run: pnpm lint

@@ -26,7 +26,7 @@ Call .github/workflows/sync.yml with a release version and a full trusted instal
 
 ## Distribution
 
-Configure GITHUB_APP_ID and GITHUB_APP_PRIVATE_KEY with an installation authorized for the listed repositories and contents write permission for repository dispatch. Consumers are disabled until their manifests, locks and receiver workflows exist on main. Manually dispatch distribute.yml with a release version; dry run is default. Enable dispatch explicitly to send uai-release events only to consumers with changed component hashes, including internal dependencies. Automatic release chaining is not enabled yet.
+Configure PLOOCKY_APP_ID and PLOOCKY_PRIVATE_KEY with an installation authorized for the listed repositories and contents write permission for repository dispatch. Consumers are disabled until their manifests, locks and receiver workflows exist on main. Manually dispatch distribute.yml with a release version; dry run is default. Enable dispatch explicitly to send uai-release events only to consumers with changed component hashes, including internal dependencies. Automatic release chaining is not enabled yet.
 
 ## Release chaining and policy
 

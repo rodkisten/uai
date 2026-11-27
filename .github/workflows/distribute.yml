@@ -9,7 +9,7 @@ on:
         type: boolean
         default: false
     secrets:
-      GITHUB_APP_PRIVATE_KEY:
+      PLOOCKY_PRIVATE_KEY:
         required: true
   workflow_dispatch:
     inputs:
@@ -32,8 +32,8 @@ jobs:
       - uses: actions/create-github-app-token@v2
         id: app
         with:
-          app-id: ${{ vars.GITHUB_APP_ID }}
-          private-key: ${{ secrets.GITHUB_APP_PRIVATE_KEY }}
+          app-id: ${{ vars.PLOOCKY_APP_ID }}
+          private-key: ${{ secrets.PLOOCKY_PRIVATE_KEY }}
           owner: rodkisten
           repositories: uai,userscripts-cf,orb,shell,jardim
       - name: Plan or dispatch
