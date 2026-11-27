@@ -50,7 +50,8 @@
         "@codemirror/view",
         "@codemirror/state",
         "@codemirror/lang-yaml",
-        "@codemirror/theme-one-dark"
+        "@codemirror/theme-one-dark",
+        "@codemirror/lang-javascript"
       ],
       "registryDependencies": [
         "button"
