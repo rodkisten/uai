@@ -13,10 +13,7 @@ export function KeyValueEditor({
   onAdd: () => void;
   disabled?: boolean;
 }) {
-  const update = (
-    id: string,
-    patch: Partial<Pick<KeyValueRow, "key" | "value">>,
-  ) =>
+  const update = (id: string, patch: Partial<Pick<KeyValueRow, "key" | "value">>) =>
     onChange(rows.map((row) => (row.id === id ? { ...row, ...patch } : row)));
   return (
     <div className="grid min-w-0 gap-2">
@@ -51,13 +48,7 @@ export function KeyValueEditor({
           </Button>
         </div>
       ))}
-      <Button
-        type="button"
-        variant="outline"
-        size="sm"
-        disabled={disabled}
-        onClick={onAdd}
-      >
+      <Button type="button" variant="outline" size="sm" disabled={disabled} onClick={onAdd}>
         <Plus size={14} /> Add variable
       </Button>
     </div>

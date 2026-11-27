@@ -13,8 +13,7 @@ export function PatchReview({
       b = after.split("\n");
     let start = 0,
       end = 0;
-    while (start < Math.min(a.length, b.length) && a[start] === b[start])
-      start++;
+    while (start < Math.min(a.length, b.length) && a[start] === b[start]) start++;
     while (
       end < Math.min(a.length, b.length) - start &&
       a[a.length - 1 - end] === b[b.length - 1 - end]
@@ -32,8 +31,7 @@ export function PatchReview({
     <section aria-label={title} className="grid min-w-0 gap-2">
       <h3 className="text-sm font-medium">{title}</h3>
       <small>
-        {diff.removed.length} removed · {diff.added.length} added · line{" "}
-        {diff.start + 1}
+        {diff.removed.length} removed · {diff.added.length} added · line {diff.start + 1}
       </small>
       <div
         role="region"
@@ -48,16 +46,13 @@ export function PatchReview({
           </div>
         ))}
         {diff.removed.map((line, i) => (
-          <div
-            className="whitespace-pre bg-destructive/10 text-destructive"
-            key={"r" + i}
-          >
+          <div className="bg-destructive/10 whitespace-pre text-destructive" key={"r" + i}>
             - {line}
           </div>
         ))}
         {diff.added.map((line, i) => (
           <div
-            className="whitespace-pre bg-emerald-500/10 text-emerald-700 dark:text-emerald-300"
+            className="bg-emerald-500/10 whitespace-pre text-emerald-700 dark:text-emerald-300"
             key={"a" + i}
           >
             + {line}

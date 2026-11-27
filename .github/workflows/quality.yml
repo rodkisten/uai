@@ -1,0 +1,29 @@
+name: UAI Quality
+on:
+  workflow_call:
+permissions:
+  contents: read
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10
+      - run: pnpm install --frozen-lockfile
+      - name: Verify formatting
+        run: pnpm format:check
+      - run: pnpm lint
+      - run: pnpm typecheck
+      - run: pnpm build
+      - uses: actions/upload-artifact@v4
+        with:
+          name: registry
+          path: dist
+      - name: Report formatting changes
+        if: always()
+        run: git diff --stat

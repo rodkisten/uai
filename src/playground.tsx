@@ -1,30 +1,198 @@
-import {useState, useMemo} from "react";
-import {FileTree,buildTree} from "../registry/components/file-tree";
-import {ObjectInspector} from "../registry/components/object-inspector";
-import {AdvancedPlayground} from "./advanced-playground";
-import {PanelNavigation} from "../registry/components/panel-navigation";
-import {SessionAlert} from "../registry/components/session-alert";
-import {ExecutionTracker} from "../registry/components/execution-tracker";
-import {PatchReview} from "../registry/components/patch-review";
-import {WorkbenchLayout} from "../registry/components/workbench-layout";
-export function Playground({name}:{name:string}){
- const [before,setBefore]=useState("name: Build\nrun: pnpm build");
- const [after,setAfter]=useState("name: Build\nrun: pnpm typecheck && pnpm build");
- const [pane,setPane]=useState("editor");
- const [status,setStatus]=useState("success");
- const [busy,setBusy]=useState(false);
- const sample=useMemo(()=>{const data: Record<string, unknown>={name:"UAI",items:[1,,3],map:new Map([["status","ready"]]),set:new Set([1,2,3]),nested:{enabled:true}};data.self=data;Object.defineProperty(data,"computed",{enumerable:true,get(){throw new Error("Getter should not run")}});return data;},[]);
- const [fileQuery,setFileQuery]=useState("");
- const [fileSelection,setFileSelection]=useState(new Set<string>());
- const fileNodes=useMemo(()=>buildTree([{path:"src/index.ts",type:"blob"},{path:"src/components/button.tsx",type:"blob"},{path:"package.json",type:"blob"},{path:"README.md",type:"blob"}]),[]);
- const field="w-full rounded-md border border-border bg-background p-2 text-base font-mono";
- if(name==="file-tree")return <div className="grid gap-2"><input className={field} value={fileQuery} onChange={e=>setFileQuery(e.target.value)} placeholder="Filter files"/><FileTree nodes={fileNodes} query={fileQuery} selected={fileSelection} onSelect={path=>setFileSelection(old=>{const next=new Set(old);next.has(path)?next.delete(path):next.add(path);return next;})}/><p className="text-xs text-muted-foreground">{fileSelection.size} selected</p></div>;
- if(name==="object-inspector")return <div className="rounded-lg border border-border p-3"><ObjectInspector data={sample} name="sample" options={{expandDepth:1,inspectDepth:12}}/></div>;
- if(name==="patch-review")return <div className="grid gap-3"><label className="grid gap-1 text-sm">Before<textarea className={field} value={before} onChange={e=>setBefore(e.target.value)}/></label><label className="grid gap-1 text-sm">After<textarea className={field} value={after} onChange={e=>setAfter(e.target.value)}/></label><PatchReview before={before} after={after}/></div>;
- if(name==="workbench-layout")return <div className="grid gap-3"><div className="flex gap-2">{["editor","inspector"].map(p=><button key={p} aria-pressed={pane===p} className="rounded-md border border-border p-2 text-sm" onClick={()=>setPane(p)}>{p}</button>)}</div><WorkbenchLayout activePane={pane}><div className="rounded-md border border-border p-4">Editor {pane==="editor"?"· active":""}</div><div className="rounded-md border border-border p-4">Inspector {pane==="inspector"?"· active":""}</div></WorkbenchLayout></div>;
- if(name==="execution-tracker")return <div className="grid gap-3"><label className="grid gap-1 text-sm">Execution status<select className={field} value={status} onChange={e=>setStatus(e.target.value)}>{["queued","in_progress","success","failure"].map(s=><option key={s}>{s}</option>)}</select></label><ExecutionTracker title="Workflow execution" name="Registry build" status={status} jobs={[{id:"build",name:"Build",status,steps:[{id:"install",name:"Install dependencies",status:status==="queued"?"queued":"success"},{id:"compile",name:"Typecheck and build",status}]}]} errors={status==="failure"?["Example: build failed"]:[]} note="Simulated execution, no external workflow triggered."/></div>;
- if(name==="panel-navigation")return <><PanelNavigation items={[{id:"editor",label:"Editor"},{id:"inspector",label:"Inspector"}]} value={pane} onChange={setPane}/><p className="text-sm">Selected: {pane}</p></>;
- if(name==="session-alert")return <SessionAlert title="Session expired" description="Example authentication state" busy={busy} onRetry={()=>{setBusy(true);setTimeout(()=>setBusy(false),800)}}/>;
- if(["code-editor","expression-input","schema-form","key-value-editor","inspector-fields"].includes(name))return <AdvancedPlayground name={name}/>;
- return <p className="text-sm text-muted-foreground">Interactive example not available yet. Source and installation are available below.</p>;
+import { useState, useMemo } from "react";
+import { FileTree, buildTree } from "../registry/components/file-tree";
+import { ObjectInspector } from "../registry/components/object-inspector";
+import { AdvancedPlayground } from "./advanced-playground";
+import { PanelNavigation } from "../registry/components/panel-navigation";
+import { SessionAlert } from "../registry/components/session-alert";
+import { ExecutionTracker } from "../registry/components/execution-tracker";
+import { PatchReview } from "../registry/components/patch-review";
+import { WorkbenchLayout } from "../registry/components/workbench-layout";
+export function Playground({ name }: { name: string }) {
+  const [before, setBefore] = useState("name: Build\nrun: pnpm build");
+  const [after, setAfter] = useState("name: Build\nrun: pnpm typecheck && pnpm build");
+  const [pane, setPane] = useState("editor");
+  const [status, setStatus] = useState("success");
+  const [busy, setBusy] = useState(false);
+  const sample = useMemo(() => {
+    const items = [1, 2, 3];
+    delete items[1];
+    const data: Record<string, unknown> = {
+      name: "UAI",
+      items,
+      map: new Map([["status", "ready"]]),
+      set: new Set([1, 2, 3]),
+      nested: { enabled: true },
+    };
+    data.self = data;
+    Object.defineProperty(data, "computed", {
+      enumerable: true,
+      get() {
+        throw new Error("Getter should not run");
+      },
+    });
+    return data;
+  }, []);
+  const [fileQuery, setFileQuery] = useState("");
+  const [fileSelection, setFileSelection] = useState(new Set<string>());
+  const fileNodes = useMemo(
+    () =>
+      buildTree([
+        { path: "src/index.ts", type: "blob" },
+        { path: "src/components/button.tsx", type: "blob" },
+        { path: "package.json", type: "blob" },
+        { path: "README.md", type: "blob" },
+      ]),
+    [],
+  );
+  const field = "w-full rounded-md border border-border bg-background p-2 text-base font-mono";
+  if (name === "file-tree")
+    return (
+      <div className="grid gap-2">
+        <input
+          className={field}
+          value={fileQuery}
+          onChange={(e) => setFileQuery(e.target.value)}
+          placeholder="Filter files"
+        />
+        <FileTree
+          nodes={fileNodes}
+          query={fileQuery}
+          selected={fileSelection}
+          onSelect={(path) =>
+            setFileSelection((old) => {
+              const next = new Set(old);
+              if (next.has(path)) next.delete(path);
+              else next.add(path);
+              return next;
+            })
+          }
+        />
+        <p className="text-xs text-muted-foreground">{fileSelection.size} selected</p>
+      </div>
+    );
+  if (name === "object-inspector")
+    return (
+      <div className="rounded-lg border border-border p-3">
+        <ObjectInspector
+          data={sample}
+          name="sample"
+          options={{ expandDepth: 1, inspectDepth: 12 }}
+        />
+      </div>
+    );
+  if (name === "patch-review")
+    return (
+      <div className="grid gap-3">
+        <label className="grid gap-1 text-sm">
+          Before
+          <textarea className={field} value={before} onChange={(e) => setBefore(e.target.value)} />
+        </label>
+        <label className="grid gap-1 text-sm">
+          After
+          <textarea className={field} value={after} onChange={(e) => setAfter(e.target.value)} />
+        </label>
+        <PatchReview before={before} after={after} />
+      </div>
+    );
+  if (name === "workbench-layout")
+    return (
+      <div className="grid gap-3">
+        <div className="flex gap-2">
+          {["editor", "inspector"].map((p) => (
+            <button
+              key={p}
+              aria-pressed={pane === p}
+              className="rounded-md border border-border p-2 text-sm"
+              onClick={() => setPane(p)}
+            >
+              {p}
+            </button>
+          ))}
+        </div>
+        <WorkbenchLayout activePane={pane}>
+          <div className="rounded-md border border-border p-4">
+            Editor {pane === "editor" ? "· active" : ""}
+          </div>
+          <div className="rounded-md border border-border p-4">
+            Inspector {pane === "inspector" ? "· active" : ""}
+          </div>
+        </WorkbenchLayout>
+      </div>
+    );
+  if (name === "execution-tracker")
+    return (
+      <div className="grid gap-3">
+        <label className="grid gap-1 text-sm">
+          Execution status
+          <select className={field} value={status} onChange={(e) => setStatus(e.target.value)}>
+            {["queued", "in_progress", "success", "failure"].map((s) => (
+              <option key={s}>{s}</option>
+            ))}
+          </select>
+        </label>
+        <ExecutionTracker
+          title="Workflow execution"
+          name="Registry build"
+          status={status}
+          jobs={[
+            {
+              id: "build",
+              name: "Build",
+              status,
+              steps: [
+                {
+                  id: "install",
+                  name: "Install dependencies",
+                  status: status === "queued" ? "queued" : "success",
+                },
+                { id: "compile", name: "Typecheck and build", status },
+              ],
+            },
+          ]}
+          errors={status === "failure" ? ["Example: build failed"] : []}
+          note="Simulated execution, no external workflow triggered."
+        />
+      </div>
+    );
+  if (name === "panel-navigation")
+    return (
+      <>
+        <PanelNavigation
+          items={[
+            { id: "editor", label: "Editor" },
+            { id: "inspector", label: "Inspector" },
+          ]}
+          value={pane}
+          onChange={setPane}
+        />
+        <p className="text-sm">Selected: {pane}</p>
+      </>
+    );
+  if (name === "session-alert")
+    return (
+      <SessionAlert
+        title="Session expired"
+        description="Example authentication state"
+        busy={busy}
+        onRetry={() => {
+          setBusy(true);
+          setTimeout(() => setBusy(false), 800);
+        }}
+      />
+    );
+  if (
+    [
+      "code-editor",
+      "expression-input",
+      "schema-form",
+      "key-value-editor",
+      "inspector-fields",
+    ].includes(name)
+  )
+    return <AdvancedPlayground name={name} />;
+  return (
+    <p className="text-sm text-muted-foreground">
+      Interactive example not available yet. Source and installation are available below.
+    </p>
+  );
 }

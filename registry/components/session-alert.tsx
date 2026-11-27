@@ -24,13 +24,7 @@ export function SessionAlert({
         <strong>{title}</strong>
         <p className="text-muted-foreground">{description}</p>
       </div>
-      <Button
-        type="button"
-        size="sm"
-        variant="outline"
-        onClick={onRetry}
-        disabled={busy}
-      >
+      <Button type="button" size="sm" variant="outline" onClick={onRetry} disabled={busy}>
         <RefreshCw size={14} /> Check again
       </Button>
       {action}

@@ -10,7 +10,7 @@ on:
         type: string
       node_version:
         type: string
-        default: '22'
+        default: "22"
     secrets:
       UAI_READ_TOKEN:
         required: false

@@ -11,9 +11,7 @@ export function WorkbenchLayout({
   return (
     <div
       data-pane={activePane}
-      className={
-        "grid min-w-0 grid-cols-1 gap-3 min-[781px]:grid-cols-2 " + className
-      }
+      className={"grid min-w-0 grid-cols-1 gap-3 min-[781px]:grid-cols-2 " + className}
     >
       {children}
     </div>

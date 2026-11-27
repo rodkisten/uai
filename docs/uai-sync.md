@@ -5,8 +5,9 @@ Phase 1: read-only planning. No automatic overwrite, merge or deploy is enabled.
 Build the registry, then run `node scripts/release-manifest.mjs 0.1.0`. The manifest hashes the published registry JSON and each source file. The generator stages a complete version directory under dist/releases and refuses to replace a completed bundle. Push a new v-prefixed SemVer tag to publish the archive and manifest as GitHub Release assets. The workflow refuses to overwrite an existing release; repository administrators can still modify assets unless GitHub immutable releases are enabled.
 
 Consumer uai.json:
+
 ```json
-{"schemaVersion":1,"components":{"code-editor":{},"file-tree":{}}}
+{ "schemaVersion": 1, "components": { "code-editor": {}, "file-tree": {} } }
 ```
 
 Consumer uai.lock.json records installed component hashes and actual local file paths/hashes, including any deterministic import relocation. Keep adapters outside managed files.
@@ -25,7 +26,7 @@ Call .github/workflows/sync.yml with a release version and a full trusted instal
 
 ## Distribution
 
-Configure GITHUB_APP_ID and GITHUB_APP_PRIVATE_KEY with an installation authorized for the listed repositories and contents write permission for repository dispatch. Consumers are disabled until their manifests, locks and receiver workflows exist on main. Manually dispatch distribute.yml with a release version; dry run is default. Enable dispatch explicitly to send uai-release events only to consumers with changed component hashes, including internal dependencies. Automatic release chaining is not enabled yet.
+Configure PLOOCKY_APP_ID and PLOOCKY_PRIVATE_KEY with an installation authorized for the listed repositories and contents write permission for repository dispatch. Consumers are disabled until their manifests, locks and receiver workflows exist on main. Manually dispatch distribute.yml with a release version; dry run is default. Enable dispatch explicitly to send uai-release events only to consumers with changed component hashes, including internal dependencies. Automatic release chaining is not enabled yet.
 
 ## Release chaining and policy
 

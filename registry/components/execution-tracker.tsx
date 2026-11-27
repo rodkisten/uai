@@ -61,12 +61,7 @@ export function ExecutionTracker({
               </div>
             ))}
             {job.url && (
-              <a
-                className="text-xs underline"
-                href={job.url}
-                target="_blank"
-                rel="noreferrer"
-              >
+              <a className="text-xs underline" href={job.url} target="_blank" rel="noreferrer">
                 Job logs
               </a>
             )}

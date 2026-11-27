@@ -9,9 +9,7 @@
       "title": "panel-navigation",
       "description": "Shared panel-navigation component",
       "dependencies": [],
-      "registryDependencies": [
-        "button"
-      ],
+      "registryDependencies": ["button"],
       "files": [
         {
           "path": "registry/components/panel-navigation.tsx",
@@ -25,12 +23,8 @@
       "type": "registry:component",
       "title": "inspector-fields",
       "description": "Shared inspector-fields component",
-      "dependencies": [
-        "lucide-react"
-      ],
-      "registryDependencies": [
-        "button"
-      ],
+      "dependencies": ["lucide-react"],
+      "registryDependencies": ["button"],
       "files": [
         {
           "path": "registry/components/inspector-fields.tsx",
@@ -53,9 +47,7 @@
         "@codemirror/theme-one-dark",
         "@codemirror/lang-javascript"
       ],
-      "registryDependencies": [
-        "button"
-      ],
+      "registryDependencies": ["button"],
       "files": [
         {
           "path": "registry/components/code-editor.tsx",
@@ -70,9 +62,7 @@
       "title": "expression-input",
       "description": "Shared expression-input component",
       "dependencies": [],
-      "registryDependencies": [
-        "@uai/code-editor"
-      ],
+      "registryDependencies": ["@uai/code-editor"],
       "files": [
         {
           "path": "registry/components/expression-input.tsx",
@@ -86,13 +76,8 @@
       "type": "registry:component",
       "title": "key-value-editor",
       "description": "Shared key-value-editor component",
-      "dependencies": [
-        "lucide-react"
-      ],
-      "registryDependencies": [
-        "button",
-        "input"
-      ],
+      "dependencies": ["lucide-react"],
+      "registryDependencies": ["button", "input"],
       "files": [
         {
           "path": "registry/components/key-value-editor.tsx",
@@ -106,13 +91,8 @@
       "type": "registry:component",
       "title": "schema-form",
       "description": "Shared schema-form component",
-      "dependencies": [
-        "@radix-ui/react-switch",
-        "@radix-ui/react-checkbox"
-      ],
-      "registryDependencies": [
-        "input"
-      ],
+      "dependencies": ["@radix-ui/react-switch", "@radix-ui/react-checkbox"],
+      "registryDependencies": ["input"],
       "files": [
         {
           "path": "registry/components/schema-form.tsx",
@@ -141,9 +121,7 @@
       "type": "registry:component",
       "title": "execution-tracker",
       "description": "Shared execution-tracker component",
-      "dependencies": [
-        "lucide-react"
-      ],
+      "dependencies": ["lucide-react"],
       "registryDependencies": [],
       "files": [
         {
@@ -158,12 +136,8 @@
       "type": "registry:component",
       "title": "session-alert",
       "description": "Shared session-alert component",
-      "dependencies": [
-        "lucide-react"
-      ],
-      "registryDependencies": [
-        "button"
-      ],
+      "dependencies": ["lucide-react"],
+      "registryDependencies": ["button"],
       "files": [
         {
           "path": "registry/components/session-alert.tsx",
@@ -217,9 +191,7 @@
       "type": "registry:component",
       "title": "File Tree",
       "description": "Provider-independent file tree with selection and lazy loading.",
-      "dependencies": [
-        "lucide-react"
-      ],
+      "dependencies": ["lucide-react"],
       "registryDependencies": [],
       "files": [
         {
@@ -239,10 +211,7 @@
       "type": "registry:component",
       "title": "Dock Panel",
       "description": "Controlled Radix dialog panel with explicit portal and mobile scrolling.",
-      "dependencies": [
-        "@radix-ui/react-dialog",
-        "lucide-react"
-      ],
+      "dependencies": ["@radix-ui/react-dialog", "lucide-react"],
       "registryDependencies": [],
       "files": [
         {
