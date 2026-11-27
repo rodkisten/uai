@@ -233,6 +233,24 @@
           "target": "components/uai/file-tree-core.ts"
         }
       ]
+    },
+    {
+      "name": "dock-panel",
+      "type": "registry:component",
+      "title": "Dock Panel",
+      "description": "Controlled Radix dialog panel with explicit portal and mobile scrolling.",
+      "dependencies": [
+        "@radix-ui/react-dialog",
+        "lucide-react"
+      ],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "registry/components/dock-panel.tsx",
+          "type": "registry:component",
+          "target": "components/uai/dock-panel.tsx"
+        }
+      ]
     }
   ]
 }

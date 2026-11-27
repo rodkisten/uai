@@ -34,6 +34,7 @@
     "@codemirror/lang-javascript": "latest",
     "@tanstack/react-router": "latest",
     "@radix-ui/react-switch": "latest",
-    "@radix-ui/react-checkbox": "latest"
+    "@radix-ui/react-checkbox": "latest",
+    "@radix-ui/react-dialog": "latest"
   }
 }
