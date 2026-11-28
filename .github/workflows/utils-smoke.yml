@@ -1,0 +1,27 @@
+name: UAI utilities smoke
+on:
+  pull_request:
+    paths:
+      - 'packages/**'
+      - 'package.json'
+      - '.github/workflows/utils-smoke.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - run: npm run test:utils
+      - name: Verify packed package exports
+        run: |
+          archive=$(npm pack --ignore-scripts --pack-destination "$RUNNER_TEMP" --silent)
+          mkdir -p "$RUNNER_TEMP/uai-consumer"
+          cd "$RUNNER_TEMP/uai-consumer"
+          npm init -y
+          npm install --ignore-scripts "$RUNNER_TEMP/$archive"
+          node --input-type=module -e "await Promise.all(['logger','summary','ci'].map(x => import('@rodkisten/uai/' + x)))"
