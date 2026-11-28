@@ -1,9 +1,9 @@
-import fs from 'node:fs';
+import fs from "node:fs";
 
 export function appendStepSummary(markdown) {
   const summaryFile = process.env.GITHUB_STEP_SUMMARY;
   if (summaryFile) {
-    fs.appendFileSync(summaryFile, `${markdown}\n`, 'utf8');
+    fs.appendFileSync(summaryFile, `${markdown}\n`, "utf8");
   } else {
     process.stdout.write(`\n--- STEP SUMMARY ---\n${markdown}\n`);
   }
@@ -14,10 +14,7 @@ export function createSummaryWriter(core) {
 
   const chunks = [];
   const escapeHtml = (str) =>
-    String(str)
-      .replace(/&/g, '&amp;')
-      .replace(/</g, '&lt;')
-      .replace(/>/g, '&gt;');
+    String(str).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 
   const api = {
     addHeading(text, level = 1) {
@@ -25,24 +22,24 @@ export function createSummaryWriter(core) {
       return api;
     },
     addRaw(text, addEOL = false) {
-      chunks.push(`${text}${addEOL ? '\n' : ''}`);
+      chunks.push(`${text}${addEOL ? "\n" : ""}`);
       return api;
     },
     addBreak() {
-      chunks.push('<br>\n');
+      chunks.push("<br>\n");
       return api;
     },
     addEOL() {
-      chunks.push('\n');
+      chunks.push("\n");
       return api;
     },
     addQuote(text, cite) {
-      const citeAttr = cite ? ` cite="${escapeHtml(cite)}"` : '';
+      const citeAttr = cite ? ` cite="${escapeHtml(cite)}"` : "";
       chunks.push(`<blockquote${citeAttr}>\n${text}\n</blockquote>\n`);
       return api;
     },
     addSeparator() {
-      chunks.push('<hr>\n');
+      chunks.push("<hr>\n");
       return api;
     },
     addLink(text, href) {
@@ -53,22 +50,22 @@ export function createSummaryWriter(core) {
       const attrs = [
         `src="${escapeHtml(src)}"`,
         `alt="${escapeHtml(alt)}"`,
-        opts.width ? `width="${opts.width}"` : '',
-        opts.height ? `height="${opts.height}"` : '',
+        opts.width ? `width="${opts.width}"` : "",
+        opts.height ? `height="${opts.height}"` : "",
       ]
         .filter(Boolean)
-        .join(' ');
+        .join(" ");
       chunks.push(`<img ${attrs}>\n`);
       return api;
     },
     addList(items, ordered = false) {
-      const tag = ordered ? 'ol' : 'ul';
-      const li = items.map((item) => `<li>${item}</li>`).join('\n');
+      const tag = ordered ? "ol" : "ul";
+      const li = items.map((item) => `<li>${item}</li>`).join("\n");
       chunks.push(`<${tag}>\n${li}\n</${tag}>\n`);
       return api;
     },
-    addCodeBlock(code, lang = '') {
-      const langAttr = lang ? ` lang="${escapeHtml(lang)}"` : '';
+    addCodeBlock(code, lang = "") {
+      const langAttr = lang ? ` lang="${escapeHtml(lang)}"` : "";
       chunks.push(`<pre${langAttr}><code>${escapeHtml(code)}</code></pre>\n`);
       return api;
     },
@@ -77,18 +74,18 @@ export function createSummaryWriter(core) {
         .map((row) => {
           const cells = row
             .map((cell) => {
-              if (typeof cell === 'object' && cell !== null) {
-                const tag = cell.header ? 'th' : 'td';
-                const colspan = cell.colspan ? ` colspan="${cell.colspan}"` : '';
-                const rowspan = cell.rowspan ? ` rowspan="${cell.rowspan}"` : '';
+              if (typeof cell === "object" && cell !== null) {
+                const tag = cell.header ? "th" : "td";
+                const colspan = cell.colspan ? ` colspan="${cell.colspan}"` : "";
+                const rowspan = cell.rowspan ? ` rowspan="${cell.rowspan}"` : "";
                 return `<${tag}${colspan}${rowspan}>${cell.data}</${tag}>`;
               }
               return `<td>${cell}</td>`;
             })
-            .join('');
+            .join("");
           return `<tr>${cells}</tr>`;
         })
-        .join('\n');
+        .join("\n");
       chunks.push(`<table>\n${htmlRows}\n</table>\n`);
       return api;
     },
@@ -97,7 +94,7 @@ export function createSummaryWriter(core) {
       return api;
     },
     async write() {
-      const output = chunks.join('\n');
+      const output = chunks.join("\n");
       appendStepSummary(output);
       chunks.length = 0;
     },
@@ -105,4 +102,3 @@ export function createSummaryWriter(core) {
 
   return api;
 }
-

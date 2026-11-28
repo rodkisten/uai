@@ -55,10 +55,7 @@ function stripAnsi(str) {
 }
 
 function escapeGitHubCommandValue(value) {
-  return String(value)
-    .replace(/%/g, "%25")
-    .replace(/\r/g, "%0D")
-    .replace(/\n/g, "%0A");
+  return String(value).replace(/%/g, "%25").replace(/\r/g, "%0D").replace(/\n/g, "%0A");
 }
 
 function fitToTerminal(text, reserve = 6) {
@@ -179,7 +176,9 @@ export class AgentReporter {
 
   fail(title, detail = "") {
     const suffix = detail ? ` ${ansi.dim("→")} ${ansi.red(detail)}` : "";
-    this._writeLine(`  ${badge.fail()} ${ansi.red(ansi.bold(title))}${suffix}${this._elapsedTag()}`);
+    this._writeLine(
+      `  ${badge.fail()} ${ansi.red(ansi.bold(title))}${suffix}${this._elapsedTag()}`,
+    );
     if (isGitHubActions) {
       const msg = escapeGitHubCommandValue(`${title}${detail ? ` - ${detail}` : ""}`);
       process.stdout.write(`::error::${msg}\n`);
@@ -192,7 +191,9 @@ export class AgentReporter {
     if (!entries.length) return;
     const maxKeyLen = Math.max(...entries.map(([k]) => String(k).length));
     for (const [key, value] of entries) {
-      this._writeLine(`    ${ansi.dim(String(key).padEnd(maxKeyLen))}  ${ansi.cyan(String(value ?? ""))}`);
+      this._writeLine(
+        `    ${ansi.dim(String(key).padEnd(maxKeyLen))}  ${ansi.cyan(String(value ?? ""))}`,
+      );
     }
   }
 

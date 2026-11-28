@@ -2,9 +2,9 @@ name: UAI utilities smoke
 on:
   pull_request:
     paths:
-      - 'packages/**'
-      - 'package.json'
-      - '.github/workflows/utils-smoke.yml'
+      - "packages/**"
+      - "package.json"
+      - ".github/workflows/utils-smoke.yml"
   workflow_dispatch:
 permissions:
   contents: read
