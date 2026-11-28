@@ -1,5 +1,5 @@
 {
-  "name": "uai-registry",
+  "name": "@rodkisten/uai",
   "private": true,
   "scripts": {
     "build": "shadcn build --output public/r && vite build && node scripts/verify-registry.mjs",
@@ -51,5 +51,16 @@
     "@radix-ui/react-switch": "latest",
     "@radix-ui/react-checkbox": "latest",
     "@radix-ui/react-dialog": "latest"
-  }
+  },
+  "version": "0.1.0",
+  "exports": {
+    "./logger": "./packages/logger/index.mjs",
+    "./summary": "./packages/summary/index.mjs",
+    "./ci": "./packages/ci-utils/index.mjs"
+  },
+  "files": [
+    "packages/logger",
+    "packages/summary",
+    "packages/ci-utils"
+  ]
 }
