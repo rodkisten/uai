@@ -76,5 +76,6 @@
     "packages/logger",
     "packages/summary",
     "packages/ci-utils"
-  ]
+  ],
+  "packageManager": "pnpm@12.23.0"
 }
