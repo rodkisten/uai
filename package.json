@@ -14,7 +14,8 @@
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "check": "pnpm lint && pnpm typecheck && pnpm build",
-    "test:utils": "node --test packages/tests/*.test.mjs"
+    "test:utils": "vitest run",
+    "test:types": "tsc --noEmit --strict --module nodenext --target es2022 --types node packages/tests/contracts.mts"
   },
   "devDependencies": {
     "shadcn": "latest",
@@ -49,7 +50,9 @@
     "@tanstack/react-router": "latest",
     "@radix-ui/react-switch": "latest",
     "@radix-ui/react-checkbox": "latest",
-    "@radix-ui/react-dialog": "latest"
+    "@radix-ui/react-dialog": "latest",
+    "vitest": "latest",
+    "@types/node": "^24.0.0"
   },
   "version": "0.1.0",
   "exports": {
