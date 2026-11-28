@@ -53,9 +53,21 @@
   },
   "version": "0.1.0",
   "exports": {
-    "./logger": "./packages/logger/index.mjs",
-    "./summary": "./packages/summary/index.mjs",
-    "./ci": "./packages/ci-utils/index.mjs"
+    "./logger": {
+      "types": "./packages/logger/index.d.mts",
+      "import": "./packages/logger/index.mjs",
+      "default": "./packages/logger/index.mjs"
+    },
+    "./summary": {
+      "types": "./packages/summary/index.d.mts",
+      "import": "./packages/summary/index.mjs",
+      "default": "./packages/summary/index.mjs"
+    },
+    "./ci": {
+      "types": "./packages/ci-utils/index.d.mts",
+      "import": "./packages/ci-utils/index.mjs",
+      "default": "./packages/ci-utils/index.mjs"
+    }
   },
   "files": [
     "packages/logger",
