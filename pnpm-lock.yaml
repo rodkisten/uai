@@ -109,6 +109,12 @@ importers:
         version: 8.4.0(jiti@2.7.0)
 
 
+  packages/ci-utils: {}
+
+  packages/logger: {}
+
+  packages/summary: {}
+
 packages:
 
   '@babel/code-frame@7.29.7':
