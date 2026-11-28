@@ -1,4 +1,5 @@
 import { performance } from "node:perf_hooks";
+import { stripVTControlCharacters } from "node:util";
 
 export const isCI = Boolean(process.env.CI || process.env.GITHUB_ACTIONS);
 export const isGitHubActions = process.env.GITHUB_ACTIONS === "true";
@@ -50,7 +51,7 @@ function formatDuration(ms) {
 }
 
 function stripAnsi(str) {
-  return String(str).replace(/\x1b\[[0-9;]*m/g, "");
+  return stripVTControlCharacters(String(str));
 }
 
 function escapeGitHubCommandValue(value) {
