@@ -1,5 +1,5 @@
 {
-  "name": "uai-registry",
+  "name": "@rodkisten/uai",
   "private": true,
   "scripts": {
     "build": "shadcn build --output public/r && vite build && node scripts/verify-registry.mjs",
@@ -13,7 +13,9 @@
     "format:check": "prettier --check .",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
-    "check": "pnpm lint && pnpm typecheck && pnpm build"
+    "check": "pnpm lint && pnpm typecheck && pnpm build",
+    "test:utils": "vitest run",
+    "test:types": "tsc -p tsconfig.utils.json"
   },
   "devDependencies": {
     "shadcn": "latest",
@@ -28,9 +30,7 @@
     "typescript-eslint": "^8.46.0",
     "globals": "^16.4.0",
     "eslint-config-prettier": "^10.1.8",
-    "prettier-plugin-tailwindcss": "^0.6.14"
-  },
-  "dependencies": {
+    "prettier-plugin-tailwindcss": "^0.6.14",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "lucide-react": "latest",
@@ -50,6 +50,31 @@
     "@tanstack/react-router": "latest",
     "@radix-ui/react-switch": "latest",
     "@radix-ui/react-checkbox": "latest",
-    "@radix-ui/react-dialog": "latest"
-  }
+    "@radix-ui/react-dialog": "latest",
+    "vitest": "latest",
+    "@types/node": "^24.0.0"
+  },
+  "version": "0.1.0",
+  "exports": {
+    "./logger": {
+      "types": "./packages/logger/index.d.mts",
+      "import": "./packages/logger/index.mjs",
+      "default": "./packages/logger/index.mjs"
+    },
+    "./summary": {
+      "types": "./packages/summary/index.d.mts",
+      "import": "./packages/summary/index.mjs",
+      "default": "./packages/summary/index.mjs"
+    },
+    "./ci": {
+      "types": "./packages/ci-utils/index.d.mts",
+      "import": "./packages/ci-utils/index.mjs",
+      "default": "./packages/ci-utils/index.mjs"
+    }
+  },
+  "files": [
+    "packages/logger",
+    "packages/summary",
+    "packages/ci-utils"
+  ]
 }

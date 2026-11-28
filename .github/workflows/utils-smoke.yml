@@ -1,0 +1,33 @@
+name: UAI utilities smoke
+on:
+  pull_request:
+    paths:
+      - "packages/**"
+      - "package.json"
+      - ".github/workflows/utils-smoke.yml"
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm test:utils
+      - run: pnpm test:types
+      - name: Verify packed package exports
+        run: |
+          archive=$(npm pack --ignore-scripts --pack-destination "$RUNNER_TEMP" --silent)
+          mkdir -p "$RUNNER_TEMP/uai-consumer"
+          cd "$RUNNER_TEMP/uai-consumer"
+          npm init -y
+          npm install --ignore-scripts --omit=dev "$RUNNER_TEMP/$archive"
+          node -e "const p = require('./node_modules/@rodkisten/uai/package.json'); if (Object.keys(p.dependencies || {}).length) throw Error('Unexpected runtime dependencies')"
+          node --input-type=module -e "await Promise.all(['logger','summary','ci'].map(x => import('@rodkisten/uai/' + x)))"
