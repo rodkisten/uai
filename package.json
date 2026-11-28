@@ -15,7 +15,7 @@
     "lint:fix": "eslint . --fix",
     "check": "pnpm lint && pnpm typecheck && pnpm build",
     "test:utils": "vitest run",
-    "test:types": "tsc --noEmit --strict --module nodenext --target es2022 --types node packages/tests/contracts.mts"
+    "test:types": "tsc -p tsconfig.utils.json"
   },
   "devDependencies": {
     "shadcn": "latest",

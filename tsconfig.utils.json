@@ -1,0 +1,14 @@
+{
+  "compilerOptions": {
+    "noEmit": true,
+    "strict": true,
+    "module": "NodeNext",
+    "target": "ES2022",
+    "types": [
+      "node"
+    ]
+  },
+  "files": [
+    "packages/tests/contracts.mts"
+  ]
+}
