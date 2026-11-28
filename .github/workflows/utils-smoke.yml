@@ -23,5 +23,6 @@ jobs:
           mkdir -p "$RUNNER_TEMP/uai-consumer"
           cd "$RUNNER_TEMP/uai-consumer"
           npm init -y
-          npm install --ignore-scripts "$RUNNER_TEMP/$archive"
+          npm install --ignore-scripts --omit=dev "$RUNNER_TEMP/$archive"
+          node -e "const p = require('./node_modules/@rodkisten/uai/package.json'); if (Object.keys(p.dependencies || {}).length) throw Error('Unexpected runtime dependencies')"
           node --input-type=module -e "await Promise.all(['logger','summary','ci'].map(x => import('@rodkisten/uai/' + x)))"
